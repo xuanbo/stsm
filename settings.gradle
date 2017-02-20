@@ -1,0 +1,4 @@
+rootProject.name = 'stsm'
+include 'common'
+include 'provider'
+include 'web'

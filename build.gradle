@@ -1,0 +1,29 @@
+subprojects {
+    group 'com.whut'
+    version '1.0-SNAPSHOT'
+
+    apply plugin: 'java'
+    apply plugin: 'idea'
+
+    // JVM 版本号要求
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    // java编译的时候缺省状态下会因为中文字符而失败
+    [compileJava,compileTestJava,javadoc]*.options*.encoding = 'UTF-8'
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+
+    ext {
+        springBootVersion = '1.5.1.RELEASE'
+        springSessionVersion = '1.3.0.RELEASE'
+        springBootRedisVersion = '1.4.4.RELEASE'
+        mysqlVersion = '5.1.38'
+        druidVersion = '1.0.26'
+        dubboVersion = '2.5.3'
+        zkclientVersion = '0.9'
+    }
+}

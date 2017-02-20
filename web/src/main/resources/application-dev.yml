@@ -1,0 +1,26 @@
+profiles: dev
+
+debug: true
+
+server:
+  port: 9090
+
+logging:
+  config: classpath:logback-spring.xml
+  level: debug
+
+spring:
+  redis:
+    host: localhost
+    port: 6379
+
+dubbo:
+  application:
+    name: stsm_consumer
+  registry:
+    protocol: zookeeper
+    address: 127.0.0.1:2181
+  consumer:
+    timeout: 5000
+  annotation:
+    package: com.whut.stsm.web.service
