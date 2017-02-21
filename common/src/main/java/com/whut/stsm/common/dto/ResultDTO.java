@@ -1,11 +1,13 @@
 package com.whut.stsm.common.dto;
 
+import java.io.Serializable;
+
 /**
  * 返回给前台数据
  *
- * Created by null on 2016/12/31.
+ * Created by null on 2016/2/21.
  */
-public class ResultDTO<T> {
+public class ResultDTO<T> implements Serializable {
 
     private static final int SUCCESS_CODE = 200;
 

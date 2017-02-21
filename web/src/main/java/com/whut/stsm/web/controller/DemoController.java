@@ -5,6 +5,7 @@ import com.whut.stsm.common.dto.ResultDTO;
 import com.whut.stsm.web.service.DemoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,9 +31,9 @@ public class DemoController {
         return demoService.listAll();
     }
 
-    @GetMapping("/show")
-    public String show() {
-        return "{\"flag\": true, \"msg\": \"成功\"}";
+    @GetMapping("/{id}")
+    public ResultDTO<?> show(@PathVariable Long id) {
+        return ResultDTO.success(null, demoService.findById(id));
     }
 
     @PostMapping("/save")

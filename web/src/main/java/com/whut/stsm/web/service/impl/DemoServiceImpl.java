@@ -27,4 +27,9 @@ public class DemoServiceImpl implements DemoService {
     public List<DemoDTO> listAll() {
         return demoService.listAll();
     }
+
+    @Override
+    public DemoDTO findById(Long id) {
+        return demoService.findById(id);
+    }
 }

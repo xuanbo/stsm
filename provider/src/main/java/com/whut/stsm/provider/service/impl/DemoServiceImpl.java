@@ -3,6 +3,8 @@ package com.whut.stsm.provider.service.impl;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.whut.stsm.common.dto.DemoDTO;
 import com.whut.stsm.common.dubbo.service.DemoService;
+import com.whut.stsm.provider.dao.DemoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -20,12 +22,12 @@ import java.util.List;
 @Service
 public class DemoServiceImpl implements DemoService {
 
+    @Autowired
+    private DemoRepository demoRepository;
+
     @Override
-    public List<DemoDTO> listAll() {
-        List<DemoDTO> list = new ArrayList<>();
-        list.add(new DemoDTO(1L, "demo1"));
-        list.add(new DemoDTO(2L, "demo2"));
-        return list;
+    public DemoDTO findById(Long id) {
+        return demoRepository.findOne(id);
     }
 
 }

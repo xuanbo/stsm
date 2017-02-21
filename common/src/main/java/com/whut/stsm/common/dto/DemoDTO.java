@@ -2,6 +2,11 @@ package com.whut.stsm.common.dto;
 
 import org.hibernate.validator.constraints.Length;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
@@ -9,11 +14,16 @@ import java.io.Serializable;
  *
  * Created by null on 2017/2/20.
  */
+@Entity
+@Table(name = "t_demo")
 public class DemoDTO implements Serializable {
 
+    @Id
+    @GeneratedValue
     private Long id;
 
     @Length(min = 8, max = 18)
+    @Column
     private String name;
 
     public DemoDTO() {

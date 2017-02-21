@@ -18,4 +18,6 @@ public interface DemoService {
 
     List<DemoDTO> listAll();
 
+    DemoDTO findById(Long id);
+
 }

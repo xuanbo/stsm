@@ -1,3 +1,4 @@
 dependencies {
     compile "org.hibernate:hibernate-validator:$hibernateValidorVersion"
+    compile "org.hibernate.javax.persistence:hibernate-jpa-2.1-api:$javaxPersistenceHibernateJpaApiVersion"
 }
