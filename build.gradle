@@ -25,5 +25,6 @@ subprojects {
         druidVersion = '1.0.26'
         dubboVersion = '2.5.3'
         zkclientVersion = '0.9'
+        hibernateValidorVersion = '5.3.4.Final'
     }
 }

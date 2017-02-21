@@ -1,5 +1,7 @@
 package com.whut.stsm.common.dto;
 
+import org.hibernate.validator.constraints.Length;
+
 import java.io.Serializable;
 
 /**
@@ -11,6 +13,7 @@ public class DemoDTO implements Serializable {
 
     private Long id;
 
+    @Length(min = 8, max = 18)
     private String name;
 
     public DemoDTO() {
