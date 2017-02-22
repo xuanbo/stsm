@@ -5,8 +5,6 @@ import com.whut.stsm.common.dto.DemoDTO;
 import com.whut.stsm.web.service.DemoService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 /**
  * 注意，这个是Spring的@Service
  *
@@ -22,11 +20,6 @@ public class DemoServiceImpl implements DemoService {
      */
     @Reference
     private com.whut.stsm.common.dubbo.service.DemoService demoService;
-
-    @Override
-    public List<DemoDTO> listAll() {
-        return demoService.listAll();
-    }
 
     @Override
     public DemoDTO findById(Long id) {
