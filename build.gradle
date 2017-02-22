@@ -27,5 +27,6 @@ subprojects {
         zkclientVersion = '0.9'
         hibernateValidorVersion = '5.3.4.Final'
         javaxPersistenceHibernateJpaApiVersion = '1.0.0.Final'
+        gsonVersion = '2.8.0'
     }
 }

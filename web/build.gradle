@@ -13,6 +13,7 @@ apply plugin: 'org.springframework.boot'
 dependencies {
     compile project(':common')
     compile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+    compile "org.springframework.boot:spring-boot-starter-security:$springBootVersion"
     compile "org.springframework.boot:spring-boot-starter-thymeleaf:$springBootVersion"
     compile "org.springframework.session:spring-session:$springSessionVersion"
     compile "org.springframework.boot:spring-boot-starter-redis:$springBootRedisVersion"

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.List;
 
 /**
  * DemoController
@@ -25,11 +24,6 @@ public class DemoController {
 
     @Autowired
     private DemoService demoService;
-
-    @GetMapping("/listAll")
-    public List<DemoDTO> listAll() {
-        return demoService.listAll();
-    }
 
     @GetMapping("/{id}")
     public ResultDTO<?> show(@PathVariable Long id) {
