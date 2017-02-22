@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 
@@ -22,9 +23,17 @@ public class ApplicationTest {
     @Autowired
     private DataSource druidDataSource;
 
+    @Autowired
+    private PlatformTransactionManager txManager;
+
     @Test
     public void showDB() {
-        log.debug("dataSource[{}]", druidDataSource.getClass());
+        log.debug("DataSource[{}]", druidDataSource.getClass());
+    }
+
+    @Test
+    public void showTxManager() {
+        log.debug("PlatformTransactionManager[{}]", txManager.getClass());
     }
 
 }

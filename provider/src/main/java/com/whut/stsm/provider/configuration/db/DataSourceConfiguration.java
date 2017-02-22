@@ -12,6 +12,8 @@ import javax.sql.DataSource;
 import java.sql.SQLException;
 
 /**
+ * DataSource配置
+ *
  * Created by null on 2017/2/20.
  */
 @Configuration
