@@ -1,4 +1,4 @@
-package com.whut.stsm.web.service;
+package com.whut.stsm.common.service;
 
 import com.whut.stsm.common.dto.UserDTO;
 

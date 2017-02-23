@@ -23,4 +23,4 @@ dubbo:
   consumer:
     timeout: 5000
   annotation:
-    package: com.whut.stsm.web.service
+    package: com.whut.stsm.web

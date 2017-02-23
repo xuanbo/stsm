@@ -2,13 +2,11 @@ package com.whut.stsm.provider.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.whut.stsm.common.dto.DemoDTO;
-import com.whut.stsm.common.dubbo.service.DemoService;
+import com.whut.stsm.common.service.DemoService;
 import com.whut.stsm.provider.dao.DemoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 注意：这里是dubbo的`@Service`
@@ -20,6 +18,7 @@ import java.util.List;
  */
 @Component
 @Service
+@Transactional(value = "jpaTxManager")
 public class DemoServiceImpl implements DemoService {
 
     @Autowired

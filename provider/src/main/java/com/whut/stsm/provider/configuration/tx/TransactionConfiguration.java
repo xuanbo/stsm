@@ -21,7 +21,7 @@ import javax.sql.DataSource;
 @EnableTransactionManagement
 public class TransactionConfiguration implements TransactionManagementConfigurer {
 
-    @Resource
+    @Resource(name = "txManager")
     private PlatformTransactionManager txManager;
 
     @Bean

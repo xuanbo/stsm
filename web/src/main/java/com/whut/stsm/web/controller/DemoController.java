@@ -1,9 +1,9 @@
 package com.whut.stsm.web.controller;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.whut.stsm.common.dto.DemoDTO;
 import com.whut.stsm.common.dto.ResultDTO;
-import com.whut.stsm.web.service.DemoService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.whut.stsm.common.service.DemoService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +22,10 @@ import javax.validation.Valid;
 @RequestMapping("/demo")
 public class DemoController {
 
-    @Autowired
+    /**
+     * 注入dubbo的服务
+     */
+    @Reference
     private DemoService demoService;
 
     @GetMapping("/{id}")
