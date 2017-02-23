@@ -7,6 +7,8 @@ import com.whut.stsm.provider.dao.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+
 /**
  * Created by null on 2017/2/22.
  */
@@ -20,5 +22,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO findByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public int loginFailure(String username) {
+        return userRepository.loginFailure(username, new Date());
+    }
+
+    @Override
+    public UserDTO save(UserDTO userDTO) {
+        return userRepository.save(userDTO);
     }
 }

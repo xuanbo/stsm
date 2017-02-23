@@ -1,4 +1,4 @@
-profile: dev
+profiles: dev
 
 debug: true
 

@@ -1,5 +1,8 @@
 package com.whut.stsm.web.configuration.security;
 
+import com.whut.stsm.common.dto.UserDTO;
+import com.whut.stsm.common.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -13,6 +16,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Date;
+
 /**
  * 登录失败限制AuthenticationProvider
  *
@@ -23,6 +28,9 @@ public class LimitLoginAuthenticationProvider implements AuthenticationProvider 
     private UserDetailsService userDetailsService;
 
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private UserService cacheUserService;
 
     /**
      * 重写身份认证
@@ -50,7 +58,7 @@ public class LimitLoginAuthenticationProvider implements AuthenticationProvider 
         //  与authentication里面的credentials相比较，加密在这里体现
         if (!passwordEncoder.matches(token.getCredentials().toString(), password)) {
             //  登录尝试失败后尝试次数加一
-
+            cacheUserService.loginFailure(token.getName());
             throw new BadCredentialsException("密码错误");
         }
         /*------------------------------------------------------------

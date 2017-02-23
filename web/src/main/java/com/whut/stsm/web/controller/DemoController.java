@@ -4,6 +4,7 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.whut.stsm.common.dto.DemoDTO;
 import com.whut.stsm.common.dto.ResultDTO;
 import com.whut.stsm.common.service.DemoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,15 +23,12 @@ import javax.validation.Valid;
 @RequestMapping("/demo")
 public class DemoController {
 
-    /**
-     * 注入dubbo的服务
-     */
-    @Reference
-    private DemoService demoService;
+    @Autowired
+    private DemoService cacheDemoService;
 
     @GetMapping("/{id}")
     public ResultDTO<?> show(@PathVariable Long id) {
-        return ResultDTO.success(null, demoService.findById(id));
+        return ResultDTO.success(null, cacheDemoService.findById(id));
     }
 
     @PostMapping("/save")

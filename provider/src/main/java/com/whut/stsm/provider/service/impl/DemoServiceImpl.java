@@ -6,7 +6,6 @@ import com.whut.stsm.common.service.DemoService;
 import com.whut.stsm.provider.dao.DemoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 注意：这里是dubbo的`@Service`
@@ -18,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Component
 @Service
-@Transactional(value = "jpaTxManager")
 public class DemoServiceImpl implements DemoService {
 
     @Autowired
