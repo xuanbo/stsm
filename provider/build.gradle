@@ -13,6 +13,8 @@ apply plugin: 'org.springframework.boot'
 dependencies {
     compile project(':common')
     compile "org.springframework.boot:spring-boot-starter:$springBootVersion"
+    compile "org.springframework.boot:spring-boot-starter-redis:$springBootRedisVersion"
+    compile "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
     compile "mysql:mysql-connector-java:$mysqlVersion"
     compile "com.alibaba:druid:$druidVersion"
     compile ("com.alibaba:dubbo:$dubboVersion") {

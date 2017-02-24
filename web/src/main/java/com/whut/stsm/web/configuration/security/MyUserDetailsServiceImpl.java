@@ -1,9 +1,9 @@
 package com.whut.stsm.web.configuration.security;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.whut.stsm.common.dto.RoleDTO;
 import com.whut.stsm.common.dto.UserDTO;
 import com.whut.stsm.common.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,12 +20,12 @@ import java.util.Collection;
  */
 public class MyUserDetailsServiceImpl implements UserDetailsService {
 
-    @Autowired
-    private UserService cacheUserService;
+    @Reference
+    private UserService userService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserDTO userDTO = cacheUserService.findByUsername(username);
+        UserDTO userDTO = userService.findByUsername(username);
         if (userDTO == null) {
             throw new UsernameNotFoundException("账号不存在");
         }

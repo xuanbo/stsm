@@ -29,14 +29,6 @@ public class UserDTO implements Serializable {
     @Column
     private String password;
 
-    // 登录失败尝试次数
-    @Column
-    private short attemptTimes;
-
-    // 最后一次登录尝试时间
-    @Column
-    private Date lastAttemptDate;
-
     // 账号过期时间，过期则不能进行认证
     @Column
     private Date accountExpiredDate;
@@ -80,22 +72,6 @@ public class UserDTO implements Serializable {
         this.password = password;
     }
 
-    public short getAttemptTimes() {
-        return attemptTimes;
-    }
-
-    public void setAttemptTimes(short attemptTimes) {
-        this.attemptTimes = attemptTimes;
-    }
-
-    public Date getLastAttemptDate() {
-        return lastAttemptDate;
-    }
-
-    public void setLastAttemptDate(Date lastAttemptDate) {
-        this.lastAttemptDate = lastAttemptDate;
-    }
-
     public RoleDTO getRoleDTO() {
         return roleDTO;
     }
@@ -134,8 +110,6 @@ public class UserDTO implements Serializable {
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", attemptTimes=" + attemptTimes +
-                ", lastAttemptDate=" + lastAttemptDate +
                 ", accountExpiredDate=" + accountExpiredDate +
                 ", credentialsExpiredDate=" + credentialsExpiredDate +
                 ", enable=" + enable +
@@ -150,11 +124,9 @@ public class UserDTO implements Serializable {
 
         UserDTO userDTO = (UserDTO) o;
 
-        if (attemptTimes != userDTO.attemptTimes) return false;
         if (!id.equals(userDTO.id)) return false;
         if (!username.equals(userDTO.username)) return false;
         if (!password.equals(userDTO.password)) return false;
-        if (!lastAttemptDate.equals(userDTO.lastAttemptDate)) return false;
         if (!accountExpiredDate.equals(userDTO.accountExpiredDate)) return false;
         if (!credentialsExpiredDate.equals(userDTO.credentialsExpiredDate)) return false;
         if (!enable.equals(userDTO.enable)) return false;
@@ -166,8 +138,6 @@ public class UserDTO implements Serializable {
         int result = id.hashCode();
         result = 31 * result + username.hashCode();
         result = 31 * result + password.hashCode();
-        result = 31 * result + (int) attemptTimes;
-        result = 31 * result + lastAttemptDate.hashCode();
         result = 31 * result + accountExpiredDate.hashCode();
         result = 31 * result + credentialsExpiredDate.hashCode();
         result = 31 * result + enable.hashCode();

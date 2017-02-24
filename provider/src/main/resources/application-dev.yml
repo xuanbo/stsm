@@ -68,3 +68,8 @@ dubbo:
     port: 20880
   annotation:
     package: com.whut.stsm.provider.service.impl
+
+namespace:
+  cache:
+    demo: com.whut.stsm.cache.demo_
+    user: com.whut.stsm.cache.user_

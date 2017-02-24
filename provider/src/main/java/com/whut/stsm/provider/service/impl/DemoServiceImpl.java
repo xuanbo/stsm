@@ -3,7 +3,7 @@ package com.whut.stsm.provider.service.impl;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.whut.stsm.common.dto.DemoDTO;
 import com.whut.stsm.common.service.DemoService;
-import com.whut.stsm.provider.dao.DemoRepository;
+import com.whut.stsm.provider.cache.DemoCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,11 +22,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class DemoServiceImpl implements DemoService {
 
     @Autowired
-    private DemoRepository demoRepository;
+    private DemoCache demoCache;
 
     @Override
+    @Transactional(value = "jpaTxManager", readOnly = true)
     public DemoDTO findById(Long id) {
-        return demoRepository.findOne(id);
+        return demoCache.findById(id).orElse(null);
     }
 
 }

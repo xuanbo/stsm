@@ -50,12 +50,13 @@ public class MyUserDetails implements UserDetails {
 
     /**
      * 失败尝试登录5次后锁定账号
+     * 不使用数据库存储登录失败尝试次数，后面采用缓存实现
      *
-     * @return 小于5次返回true
+     * @return 返回true
      */
     @Override
     public boolean isAccountNonLocked() {
-        return user.getAttemptTimes() < 5;
+        return true;
     }
 
     /**

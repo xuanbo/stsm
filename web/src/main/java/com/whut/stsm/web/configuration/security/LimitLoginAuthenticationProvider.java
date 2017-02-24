@@ -1,7 +1,7 @@
 package com.whut.stsm.web.configuration.security;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.whut.stsm.common.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -26,8 +26,8 @@ public class LimitLoginAuthenticationProvider implements AuthenticationProvider 
 
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private UserService cacheUserService;
+    @Reference
+    private UserService userService;
 
     /**
      * 重写身份认证
@@ -52,9 +52,9 @@ public class LimitLoginAuthenticationProvider implements AuthenticationProvider 
          *-----------------------------------------------------------*/
         if (!userDetails.isEnabled()) {
             throw new DisabledException("账号已被禁用");
-        } else if (!userDetails.isAccountNonLocked()) {
+        } /*else if (!userDetails.isAccountNonLocked()) {
             throw new LockedException("密码错误5次，账号已被锁定");
-        } else if (!userDetails.isAccountNonExpired()) {
+        } */else if (!userDetails.isAccountNonExpired()) {
             throw new AccountExpiredException("账号已过期");
         } else if (!userDetails.isCredentialsNonExpired()) {
             throw new LockedException("凭证已过期");
@@ -71,7 +71,7 @@ public class LimitLoginAuthenticationProvider implements AuthenticationProvider 
         //  与authentication里面的credentials相比较，加密在这里体现
         if (!passwordEncoder.matches(token.getCredentials().toString(), password)) {
             //  登录尝试失败后尝试次数加一
-            cacheUserService.loginFailure(username);
+
             throw new BadCredentialsException("密码错误");
         }
         /*------------------------------------------------------------
@@ -79,7 +79,6 @@ public class LimitLoginAuthenticationProvider implements AuthenticationProvider 
          *-----------------------------------------------------------*/
 
         //  账号通过认证则授权
-        cacheUserService.resetLocked(username);
         return new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
     }
 

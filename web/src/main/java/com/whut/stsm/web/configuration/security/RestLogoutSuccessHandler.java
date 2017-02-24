@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
+ * 注销成功返回json
+ *
  * Created by null on 2017/2/22.
  */
 public class RestLogoutSuccessHandler implements LogoutSuccessHandler {
