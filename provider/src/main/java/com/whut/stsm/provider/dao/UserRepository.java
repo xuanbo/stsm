@@ -20,4 +20,7 @@ public interface UserRepository extends JpaRepository<UserDTO, Long> {
     @Query("update UserDTO u set u.attemptTimes = u.attemptTimes + 1, u.lastAttemptDate = ?2 where u.username = ?1")
     int loginFailure(String username, Date lastAttemptDate);
 
+    @Modifying
+    @Query("update UserDTO u set u.attemptTimes = 0 where u.username = ?1")
+    int resetLocked(String username);
 }

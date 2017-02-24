@@ -10,10 +10,12 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 /**
+ * 缓存user
+ *
  * Created by null on 2017/2/23.
  */
 @Service("cacheUserService")
-@CacheConfig(cacheNames = "userCache")
+@CacheConfig(cacheNames = "com.whut.stsm.userCache")
 public class CacheUserServiceImpl implements UserService {
 
     @Reference
@@ -32,7 +34,13 @@ public class CacheUserServiceImpl implements UserService {
     }
 
     @Override
-    @CacheEvict(key = "'com.whut.stsm.cache.user:' + #userDTO.username")
+    @CacheEvict(key = "'com.whut.stsm.cache.user:' + #username")
+    public int resetLocked(String username) {
+        return userService.resetLocked(username);
+    }
+
+    @Override
+    @CachePut(key = "'com.whut.stsm.cache.user:' + #userDTO.username")
     public UserDTO save(UserDTO userDTO) {
         return userService.save(userDTO);
     }

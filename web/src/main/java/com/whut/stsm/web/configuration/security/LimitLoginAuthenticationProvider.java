@@ -1,6 +1,5 @@
 package com.whut.stsm.web.configuration.security;
 
-import com.whut.stsm.common.dto.UserDTO;
 import com.whut.stsm.common.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AccountExpiredException;
@@ -15,8 +14,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.util.Date;
 
 /**
  * 登录失败限制AuthenticationProvider
@@ -42,29 +39,13 @@ public class LimitLoginAuthenticationProvider implements AuthenticationProvider 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) authentication;
-
+        // 用户名
+        String username = token.getName();
         //  导入UserDetails，判断账号是否有效，为null说明查询不到用户，账号不存在
-        UserDetails userDetails = userDetailsService.loadUserByUsername(token.getName());
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         if (userDetails == null) {
             throw new UsernameNotFoundException("账号不存在");
         }
-
-
-        /*------------------------------------------------------------
-         *       验证密码是否正确 开始
-         *-----------------------------------------------------------*/
-        //  数据库用户的密码(已经加密)
-        String password = userDetails.getPassword();
-        //  与authentication里面的credentials相比较，加密在这里体现
-        if (!passwordEncoder.matches(token.getCredentials().toString(), password)) {
-            //  登录尝试失败后尝试次数加一
-            cacheUserService.loginFailure(token.getName());
-            throw new BadCredentialsException("密码错误");
-        }
-        /*------------------------------------------------------------
-         *       验证密码是否正确 结束
-         *-----------------------------------------------------------*/
-
 
         /*------------------------------------------------------------
          *       判断账号是否能正确使用 开始
@@ -72,7 +53,7 @@ public class LimitLoginAuthenticationProvider implements AuthenticationProvider 
         if (!userDetails.isEnabled()) {
             throw new DisabledException("账号已被禁用");
         } else if (!userDetails.isAccountNonLocked()) {
-            throw new LockedException("账号已被锁定");
+            throw new LockedException("密码错误5次，账号已被锁定");
         } else if (!userDetails.isAccountNonExpired()) {
             throw new AccountExpiredException("账号已过期");
         } else if (!userDetails.isCredentialsNonExpired()) {
@@ -82,7 +63,23 @@ public class LimitLoginAuthenticationProvider implements AuthenticationProvider 
          *       判断账号是否能正确使用 结束
          *-----------------------------------------------------------*/
 
+        /*------------------------------------------------------------
+         *       验证密码是否正确 开始
+         *-----------------------------------------------------------*/
+        //  数据库用户的密码(已经加密)
+        String password = userDetails.getPassword();
+        //  与authentication里面的credentials相比较，加密在这里体现
+        if (!passwordEncoder.matches(token.getCredentials().toString(), password)) {
+            //  登录尝试失败后尝试次数加一
+            cacheUserService.loginFailure(username);
+            throw new BadCredentialsException("密码错误");
+        }
+        /*------------------------------------------------------------
+         *       验证密码是否正确 结束
+         *-----------------------------------------------------------*/
+
         //  账号通过认证则授权
+        cacheUserService.resetLocked(username);
         return new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
     }
 

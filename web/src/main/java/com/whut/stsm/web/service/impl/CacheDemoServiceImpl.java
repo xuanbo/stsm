@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 /**
  * 缓存Demo
+ * 所有关于事务、以及完整的业务逻辑由provider提供（为了保证事务，将业务逻辑完全在provider中实现）
+ * customer只做缓存
  *
  * Created by null on 2017/2/23.
  */

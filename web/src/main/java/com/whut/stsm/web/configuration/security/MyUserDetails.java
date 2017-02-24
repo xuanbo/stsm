@@ -51,11 +51,11 @@ public class MyUserDetails implements UserDetails {
     /**
      * 失败尝试登录5次后锁定账号
      *
-     * @return 小于等于5次返回true
+     * @return 小于5次返回true
      */
     @Override
     public boolean isAccountNonLocked() {
-        return user.getAttemptTimes() <= 5;
+        return user.getAttemptTimes() < 5;
     }
 
     /**

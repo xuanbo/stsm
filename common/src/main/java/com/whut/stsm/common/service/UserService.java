@@ -17,6 +17,14 @@ public interface UserService {
      */
     int loginFailure(String username);
 
+    /**
+     * 重置锁定
+     *
+     * @param username 用户名
+     * @return 操作成功返回1
+     */
+    int resetLocked(String username);
+
     UserDTO save(UserDTO userDTO);
 
 }

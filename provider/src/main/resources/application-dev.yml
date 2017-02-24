@@ -53,6 +53,10 @@ spring:
       naming:
         strategy: org.hibernate.cfg.ImprovedNamingStrategy
 
+  aop:
+    auto: true
+    proxy-target-class: true
+
 dubbo:
   application:
     name: stsm_provider
