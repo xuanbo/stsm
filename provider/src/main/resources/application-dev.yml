@@ -18,7 +18,7 @@ spring:
     dbName: stsm
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/${spring.datasource.dbName}?characterEncoding=UTF-8
+    url: jdbc:mysql://127.0.0.1:3306/${spring.datasource.dbName}?characterEncoding=UTF-8&useSSL=true
     username: root
     password: 123456
     # 初始化大小，最小，最大

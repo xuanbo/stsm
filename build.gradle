@@ -29,5 +29,6 @@ subprojects {
         javaxPersistenceHibernateJpaApiVersion = '1.0.0.Final'
         gsonVersion = '2.8.0'
         jacksonVersion = '2.8.6'
+        flowableVersion = '6.0.0'
     }
 }

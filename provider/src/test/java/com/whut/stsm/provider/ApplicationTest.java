@@ -1,5 +1,6 @@
 package com.whut.stsm.provider;
 
+import org.flowable.engine.RepositoryService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -24,7 +25,10 @@ public class ApplicationTest {
     private DataSource druidDataSource;
 
     @Autowired
-    private PlatformTransactionManager txManager;
+    private PlatformTransactionManager transactionManager;
+
+    @Autowired
+    private RepositoryService repositoryService;
 
     @Test
     public void showDB() {
@@ -33,7 +37,11 @@ public class ApplicationTest {
 
     @Test
     public void showTxManager() {
-        log.debug("PlatformTransactionManager[{}]", txManager.getClass());
+        log.debug("PlatformTransactionManager[{}]", transactionManager.getClass());
     }
 
+    @Test
+    public void showProcessDefinitions() {
+        log.debug("Number of process definitions: {}", repositoryService.createDeploymentQuery().count());
+    }
 }
