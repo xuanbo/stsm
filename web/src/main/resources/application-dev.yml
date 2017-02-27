@@ -24,3 +24,7 @@ dubbo:
     timeout: 5000
   annotation:
     package: com.whut.stsm.web
+
+# actuator
+management:
+  port: 54001

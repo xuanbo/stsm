@@ -1,5 +1,8 @@
 package com.whut.stsm.common.dto;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 
 /**
@@ -7,12 +10,16 @@ import java.io.Serializable;
  *
  * Created by null on 2016/2/21.
  */
+@ApiModel
 public class ResultDTO<T> implements Serializable {
 
     private static final int SUCCESS_CODE = 200;
 
+    @ApiModelProperty(value = "状态码", example="200", required = true, position=-2)
     private Integer code;
+    @ApiModelProperty(value = "消息", example="success", position=-1)
     private String message;
+    @ApiModelProperty(value = "数据")
     private T result;
 
     public ResultDTO(Integer code, String message, T result) {
