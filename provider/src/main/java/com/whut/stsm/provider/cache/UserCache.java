@@ -4,9 +4,12 @@ import com.whut.stsm.common.dto.UserDTO;
 import com.whut.stsm.provider.dao.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.BoundValueOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 /**
  * user缓存
@@ -21,6 +24,9 @@ public class UserCache extends RedisCache<UserDTO> {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     public Optional<UserDTO> findByUsername(String username) {
         final String key = namespace + "username_" + username;
@@ -39,6 +45,33 @@ public class UserCache extends RedisCache<UserDTO> {
         UserDTO savedUserDTO = userRepository.save(userDTO);
         put(key, savedUserDTO);
         return savedUserDTO;
+    }
+
+    public void loginFailure(String username) {
+        final String key = namespace + "username_" + username + "_attemptTimes";
+        BoundValueOperations valueOps = redisTemplate.boundValueOps(key);
+        Object obj = valueOps.get();
+        if (obj == null) {
+            valueOps.set(1, 30, TimeUnit.MINUTES);
+        } else if (obj instanceof Integer) {
+            Integer attemptTimes = (Integer) obj;
+            valueOps.set(++attemptTimes, 30, TimeUnit.MINUTES);
+        }
+    }
+
+    public int getLoginAttemptTimes(String username) {
+        final String key = namespace + "username_" + username + "_attemptTimes";
+        BoundValueOperations valueOps = redisTemplate.boundValueOps(key);
+        Object obj = valueOps.get();
+        if (obj instanceof Integer) {
+            return (int) obj;
+        }
+        return -1;
+    }
+
+    public void resetLoginAttemptTimes(String username) {
+        final String key = namespace + "username_" + username + "_attemptTimes";
+        redisTemplate.delete(key);
     }
 
 }

@@ -22,6 +22,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  */
 public class LimitLoginAuthenticationProvider implements AuthenticationProvider {
 
+    /**
+     * 登录失败尝试次数
+     */
+    private static final int ATTEMPT_TIMES = 5;
+
     private UserDetailsService userDetailsService;
 
     private PasswordEncoder passwordEncoder;
@@ -50,6 +55,9 @@ public class LimitLoginAuthenticationProvider implements AuthenticationProvider 
         /*------------------------------------------------------------
          *       判断账号是否能正确使用 开始
          *-----------------------------------------------------------*/
+        if (userService.getLoginAttemptTimes(username) >= ATTEMPT_TIMES) {
+            throw new LockedException("密码错误5次，账号已被锁定30分钟");
+        }
         if (!userDetails.isEnabled()) {
             throw new DisabledException("账号已被禁用");
         } /*else if (!userDetails.isAccountNonLocked()) {
@@ -71,7 +79,7 @@ public class LimitLoginAuthenticationProvider implements AuthenticationProvider 
         //  与authentication里面的credentials相比较，加密在这里体现
         if (!passwordEncoder.matches(token.getCredentials().toString(), password)) {
             //  登录尝试失败后尝试次数加一
-
+            userService.loginFailure(username);
             throw new BadCredentialsException("密码错误");
         }
         /*------------------------------------------------------------
@@ -79,6 +87,7 @@ public class LimitLoginAuthenticationProvider implements AuthenticationProvider 
          *-----------------------------------------------------------*/
 
         //  账号通过认证则授权
+        userService.resetLoginAttemptTimes(username);
         return new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
     }
 
