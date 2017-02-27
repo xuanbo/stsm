@@ -35,4 +35,8 @@ public class DemoCache extends RedisCache<DemoDTO> {
         return persistDemoDTOOptional;
     }
 
+    public void save(DemoDTO demoDTO) {
+        demoRepository.save(demoDTO);
+    }
+
 }

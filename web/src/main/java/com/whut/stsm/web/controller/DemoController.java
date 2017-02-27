@@ -40,8 +40,13 @@ public class DemoController {
         return ResultDTO.success(null, demoService.findById(id));
     }
 
+    @ApiOperation(value = "保存", response = ResultDTO.class)
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "body", name = "demoDTO", required = true)
+    })
     @PostMapping("/save")
     public ResultDTO<?> save(@Valid @RequestBody DemoDTO demoDTO) {
+        demoService.save(demoDTO);
         return ResultDTO.success("success");
     }
 

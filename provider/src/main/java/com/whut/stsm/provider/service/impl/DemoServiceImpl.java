@@ -30,4 +30,10 @@ public class DemoServiceImpl implements DemoService {
         return demoCache.findById(id).orElse(null);
     }
 
+    @Override
+    @Transactional(value = "jpaTxManager")
+    public void save(DemoDTO demoDTO) {
+        demoCache.save(demoDTO);
+    }
+
 }

@@ -2,6 +2,7 @@ package com.whut.stsm.common.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.Column;
@@ -19,6 +20,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "t_demo")
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class DemoDTO implements Serializable {
 
