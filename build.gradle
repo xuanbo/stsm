@@ -31,5 +31,10 @@ subprojects {
         jacksonVersion = '2.8.6'
         flowableVersion = '6.0.0'
         swagger2Version = '2.6.1'
+        lombokVersion = '1.16.14'
+    }
+
+    dependencies {
+        compile "org.projectlombok:lombok:$lombokVersion"
     }
 }

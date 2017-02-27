@@ -1,5 +1,7 @@
 package com.whut.stsm.common.dto;
 
+import lombok.Data;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +19,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "t_user")
+@Data
 public class UserDTO implements Serializable {
 
     @Id
@@ -48,100 +51,4 @@ public class UserDTO implements Serializable {
     @JoinColumn(name = "role_id")
     private RoleDTO roleDTO;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public RoleDTO getRoleDTO() {
-        return roleDTO;
-    }
-
-    public void setRoleDTO(RoleDTO roleDTO) {
-        this.roleDTO = roleDTO;
-    }
-
-    public Date getAccountExpiredDate() {
-        return accountExpiredDate;
-    }
-
-    public void setAccountExpiredDate(Date accountExpiredDate) {
-        this.accountExpiredDate = accountExpiredDate;
-    }
-
-    public Date getCredentialsExpiredDate() {
-        return credentialsExpiredDate;
-    }
-
-    public void setCredentialsExpiredDate(Date credentialsExpiredDate) {
-        this.credentialsExpiredDate = credentialsExpiredDate;
-    }
-
-    public Boolean getEnable() {
-        return enable;
-    }
-
-    public void setEnable(Boolean enable) {
-        this.enable = enable;
-    }
-
-    @Override
-    public String toString() {
-        return "UserDTO{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", accountExpiredDate=" + accountExpiredDate +
-                ", credentialsExpiredDate=" + credentialsExpiredDate +
-                ", enable=" + enable +
-                ", roleDTO=" + roleDTO +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        UserDTO userDTO = (UserDTO) o;
-
-        if (!id.equals(userDTO.id)) return false;
-        if (!username.equals(userDTO.username)) return false;
-        if (!password.equals(userDTO.password)) return false;
-        if (!accountExpiredDate.equals(userDTO.accountExpiredDate)) return false;
-        if (!credentialsExpiredDate.equals(userDTO.credentialsExpiredDate)) return false;
-        if (!enable.equals(userDTO.enable)) return false;
-        return roleDTO.equals(userDTO.roleDTO);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + username.hashCode();
-        result = 31 * result + password.hashCode();
-        result = 31 * result + accountExpiredDate.hashCode();
-        result = 31 * result + credentialsExpiredDate.hashCode();
-        result = 31 * result + enable.hashCode();
-        result = 31 * result + roleDTO.hashCode();
-        return result;
-    }
 }
