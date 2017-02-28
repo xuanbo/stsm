@@ -23,7 +23,13 @@ public class FlowableServiceTest {
     private FlowableService flowableService;
 
     @Test
-    public void findTask() {
-        log.debug("{}", flowableService.findTask("张三", new Page<>(2, 2)));
+    public void startProcessInstance() {
+        flowableService.startProcessInstanceByKey("demo", "zhangsan");
     }
+
+    @Test
+    public void findTask() {
+        log.debug("{}", flowableService.findTask("zhangsan", new Page<>(1, 10)));
+    }
+
 }

@@ -19,8 +19,8 @@ public class FlowableController {
     @Reference
     private FlowableService flowableService;
 
-    @GetMapping("/task/{userId}")
-    public Page<Task> findTask(@PathVariable String userId, Page<Task> page) {
-        return flowableService.findTask(userId, page);
+    @GetMapping("/task/{username}")
+    public Page<Task> findTask(@PathVariable String username, Page<Task> page) {
+        return flowableService.findTask(username, page);
     }
 }

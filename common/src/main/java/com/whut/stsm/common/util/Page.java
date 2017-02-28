@@ -1,5 +1,9 @@
 package com.whut.stsm.common.util;
 
+import org.springframework.util.CollectionUtils;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -7,7 +11,7 @@ import java.util.List;
  *
  * Created by null on 2017/2/28.
  */
-public class Page<T> {
+public class Page<T> implements Serializable {
 
     private int current;
     private int size;
@@ -18,6 +22,11 @@ public class Page<T> {
     private long count;
     private int pages;
     private List<T> list;
+
+    public Page() {
+        this.current = 1;
+        this.size = 10;
+    }
 
     public Page(int current, int size) {
         this.current = current > 0 ? current : 1;
@@ -71,7 +80,7 @@ public class Page<T> {
     }
 
     public void setList(List<T> list) {
-        this.list = list;
+        this.list = CollectionUtils.isEmpty(list) ? new ArrayList<>() : list;
     }
 
     @Override
