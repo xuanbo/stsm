@@ -1,10 +1,3 @@
-profiles: dev
-
-debug: true
-
-server:
-  port: 8080
-
 logging:
   config: classpath:logback-spring.xml
   level: debug
@@ -57,6 +50,7 @@ spring:
     auto: true
     proxy-target-class: true
 
+# dubbo
 dubbo:
   application:
     name: stsm_provider
@@ -69,6 +63,7 @@ dubbo:
   annotation:
     package: com.whut.stsm.provider.service.impl
 
+# 命名空间
 namespace:
   cache:
     demo: com.whut.stsm.cache.demo_

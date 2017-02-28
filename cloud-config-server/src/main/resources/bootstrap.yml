@@ -1,0 +1,7 @@
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/xuanbo/stsm
+          search-paths: cloud-config-repo

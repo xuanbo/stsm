@@ -13,6 +13,7 @@ apply plugin: 'org.springframework.boot'
 dependencies {
     compile project(':common')
     compile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+    compile "org.springframework.cloud:spring-cloud-config-client:$springCloudVersion"
     compile "org.springframework.boot:spring-boot-starter-actuator:$springBootVersion"
     compile "org.springframework.boot:spring-boot-starter-security:$springBootVersion"
     compile "org.springframework.boot:spring-boot-starter-thymeleaf:$springBootVersion"

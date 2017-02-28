@@ -1,19 +1,18 @@
-profiles: dev
-
-debug: true
-
-server:
-  port: 9090
-
-logging:
-  config: classpath:logback-spring.xml
-  level: debug
+hello:
+  world
 
 spring:
+  # redis
   redis:
     host: localhost
     port: 6379
 
+# log
+logging:
+  config: classpath:logback-spring.xml
+  level: debug
+
+# dubbo
 dubbo:
   application:
     name: stsm_consumer
@@ -24,7 +23,3 @@ dubbo:
     timeout: 5000
   annotation:
     package: com.whut.stsm.web
-
-# actuator
-management:
-  port: 54001
