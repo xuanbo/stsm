@@ -22,10 +22,11 @@
 * spring-boot、spring-session、spring-security等全家桶
 * dubbo + zookeeper分布式rpc服务
 * redis缓存
-* mysql、mongo数据库
-* activiti5或flowable工作流
+* mysql数据库
+* flowable工作流
 * mybatis、jdbcTemplate、spring jpa持久层
 * hibernate-validation数据校验
+* spring-cloud-config管理配置
 * 其他
 * nginx反向代理
 

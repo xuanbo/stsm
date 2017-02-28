@@ -4,6 +4,7 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.whut.stsm.common.dto.DemoDTO;
 import com.whut.stsm.common.dto.ResultDTO;
 import com.whut.stsm.common.service.DemoService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -21,6 +22,7 @@ import javax.validation.Valid;
  *
  * Created by null on 2017/2/20.
  */
+@Api(value = "DemoController")
 @RestController
 @RequestMapping("/demo")
 public class DemoController {

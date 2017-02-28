@@ -1,9 +1,11 @@
 package com.whut.stsm.common.service;
 
+import com.whut.stsm.common.dto.TaskDTO;
 import com.whut.stsm.common.util.Page;
 import org.flowable.engine.task.Task;
 
 import java.util.Date;
+import java.util.Map;
 
 /**
  * 流程服务接口
@@ -15,14 +17,14 @@ public interface FlowableService {
     /***************************************************************************************
      *  process
      **************************************************************************************/
-    void startProcessInstanceByKey(String key, String username);
+    void startProcessInstanceByKey(String key, Map<String, Object> variables);
 
     /***************************************************************************************
      *  task
      **************************************************************************************/
-    Page<Task> findTask(String username, Page<Task> page);
+    Page<TaskDTO> findTask(String assignee, Page<TaskDTO> page);
 
-    Page<Task> findTask(String username, Date after, Date before, Page<Task> page);
+    Page<TaskDTO> findTask(String assignee, Date after, Date before, Page<TaskDTO> page);
 
-    void completeTask(String taskId);
+    void completeTask(String taskId, Map<String, Object> variables);
 }

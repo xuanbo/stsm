@@ -26,7 +26,7 @@ public class ResultDTO<T> implements Serializable {
     @ApiModelProperty(value = "消息", example="success", position=-1)
     private String message;
     @ApiModelProperty(value = "数据")
-    private T result;
+    private T data;
 
     public static ResultDTO<?> success(String message) {
         return new ResultDTO<String>(SUCCESS_CODE, message, null);
