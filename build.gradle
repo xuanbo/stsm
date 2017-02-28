@@ -32,6 +32,7 @@ subprojects {
         flowableVersion = '6.0.0'
         swagger2Version = '2.6.1'
         lombokVersion = '1.16.14'
+        springCloudVersion = '1.2.2.RELEASE'
     }
 
     dependencies {

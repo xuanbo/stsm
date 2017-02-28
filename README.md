@@ -7,6 +7,8 @@
 * common 通用依赖、接口等
 * provide 服务提供方，依赖common
 * web 服务消费方，依赖common
+* cloud-config-repo 配置信息
+* cloud-config-server 配置服务端
 
 # 2.设计方案
 
