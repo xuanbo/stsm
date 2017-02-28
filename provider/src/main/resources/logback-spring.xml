@@ -2,5 +2,6 @@
 <configuration>
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
     <logger name="org.springframework.web" level="DEBUG" />
+    <logger name="org.flowable" level="DEBUG" />
     <logger name="com.whut.stsm" level="DEBUG" />
 </configuration>

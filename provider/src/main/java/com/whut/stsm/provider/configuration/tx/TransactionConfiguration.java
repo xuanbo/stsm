@@ -20,7 +20,7 @@ import javax.sql.DataSource;
 public class TransactionConfiguration {
 
     @Bean
-    public PlatformTransactionManager transactionManager (DataSource dataSource) {
+    public PlatformTransactionManager transactionManager(DataSource dataSource) {
         return new DataSourceTransactionManager(dataSource);
     }
 

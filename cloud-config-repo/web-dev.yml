@@ -1,8 +1,6 @@
 hello:
   world
 
-debug: true
-
 spring:
   # redis
   redis:
