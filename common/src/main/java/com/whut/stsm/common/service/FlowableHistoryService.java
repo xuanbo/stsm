@@ -1,7 +1,8 @@
 package com.whut.stsm.common.service;
 
+import com.whut.stsm.common.dto.HistoryTaskDTO;
 import com.whut.stsm.common.util.Page;
-import org.flowable.engine.history.HistoricTaskInstance;
+import org.flowable.engine.history.HistoricVariableInstance;
 
 import java.util.Date;
 
@@ -15,8 +16,8 @@ public interface FlowableHistoryService {
     /***************************************************************************************
      *  history task
      **************************************************************************************/
-    Page<HistoricTaskInstance> findTask(String username, Page<HistoricTaskInstance> page);
+    Page<HistoryTaskDTO> findTask(String assignee, Page<HistoryTaskDTO> page);
 
-    Page<HistoricTaskInstance> findTask(String username, Date after, Date before, Page<HistoricTaskInstance> page);
+    Page<HistoryTaskDTO> findTask(String assignee, Date after, Date before, Page<HistoryTaskDTO> page);
 
 }

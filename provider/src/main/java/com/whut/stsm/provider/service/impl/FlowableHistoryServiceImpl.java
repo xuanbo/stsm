@@ -1,15 +1,18 @@
 package com.whut.stsm.provider.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.whut.stsm.common.dto.HistoryTaskDTO;
 import com.whut.stsm.common.service.FlowableHistoryService;
 import com.whut.stsm.common.util.Page;
 import org.flowable.engine.HistoryService;
 import org.flowable.engine.history.HistoricTaskInstance;
 import org.flowable.engine.history.HistoricTaskInstanceQuery;
+import org.flowable.engine.history.HistoricVariableInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -26,22 +29,18 @@ public class FlowableHistoryServiceImpl implements FlowableHistoryService {
 
     @Override
     @Transactional(value = "transactionManager", readOnly = true)
-    public Page<HistoricTaskInstance> findTask(String username, Page<HistoricTaskInstance> page) {
+    public Page<HistoryTaskDTO> findTask(String username, Page<HistoryTaskDTO> page) {
         HistoricTaskInstanceQuery historicTaskInstanceQuery = historyService.createHistoricTaskInstanceQuery()
                 .taskAssignee(username)
                 .orderByTaskPriority().desc()
                 .orderByTaskCreateTime().desc()
                 .orderByTaskDueDate().asc();
-        long count = historicTaskInstanceQuery.count();
-        page.setCount(count);
-        List<HistoricTaskInstance> tasks = historicTaskInstanceQuery.listPage(page.getOffset(), page.getSize());
-        page.setList(tasks);
-        return page;
+        return pageHelper(historicTaskInstanceQuery, page);
     }
 
     @Override
     @Transactional(value = "transactionManager", readOnly = true)
-    public Page<HistoricTaskInstance> findTask(String username, Date after, Date before, Page<HistoricTaskInstance> page) {
+    public Page<HistoryTaskDTO> findTask(String username, Date after, Date before, Page<HistoryTaskDTO> page) {
         HistoricTaskInstanceQuery historicTaskInstanceQuery = historyService.createHistoricTaskInstanceQuery()
                 .taskAssignee(username)
                 .taskCreatedAfter(after)
@@ -49,10 +48,16 @@ public class FlowableHistoryServiceImpl implements FlowableHistoryService {
                 .orderByTaskPriority().desc()
                 .orderByTaskCreateTime().desc()
                 .orderByTaskDueDate().asc();
+        return pageHelper(historicTaskInstanceQuery, page);
+    }
+
+    private Page<HistoryTaskDTO> pageHelper(HistoricTaskInstanceQuery historicTaskInstanceQuery, Page<HistoryTaskDTO> page) {
         long count = historicTaskInstanceQuery.count();
         page.setCount(count);
-        List<HistoricTaskInstance> tasks = historicTaskInstanceQuery.listPage(page.getOffset(), page.getSize());
-        page.setList(tasks);
+        List<HistoricTaskInstance> historicTaskInstances = historicTaskInstanceQuery.listPage(page.getOffset(), page.getSize());
+        List<HistoryTaskDTO> historyTaskDTOS = new ArrayList<>(historicTaskInstances.size());
+        historicTaskInstances.forEach(historicTaskInstance -> historyTaskDTOS.add(new HistoryTaskDTO(historicTaskInstance)));
+        page.setList(historyTaskDTOS);
         return page;
     }
 

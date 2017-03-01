@@ -1,19 +1,18 @@
 package com.whut.stsm.common.dto;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.flowable.engine.task.DelegationState;
 import org.flowable.engine.task.Task;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Map;
 
 /**
+ * 任务
+ *
  * Created by null on 2017/2/28.
  */
 @Data
-@NoArgsConstructor
 public class TaskDTO implements Serializable {
 
     private String id;
@@ -46,27 +45,27 @@ public class TaskDTO implements Serializable {
     private Date createTime;
     // 持续时间
     private Date dueDate;
-    // 流程变量
-    private Map<String, Object> processVariables;
+
+    public TaskDTO() {
+    }
 
     public TaskDTO(Task task) {
         this.id = task.getId();
-        this.name = task.getId();
-        this.assignee = task.getId();
-        this.category = task.getId();
-        this.description = task.getId();
-        this.executionId = task.getId();
-        this.owner = task.getId();
-        this.parentTaskId = task.getId();
-        this.priority = task.getId();
-        this.processDefinitionId = task.getId();
-        this.processInstanceId = task.getId();
-        this.taskDefinitionKey = task.getId();
-        this.tenantId = task.getId();
-        this.delegationState = task.getId();
-        this.createTime = task.getId();
-        this.dueDate = task.getId();
-        this.processVariables = task.getId();
+        this.name = task.getName();
+        this.assignee = task.getAssignee();
+        this.category = task.getCategory();
+        this.description = task.getDescription();
+        this.executionId = task.getExecutionId();
+        this.owner = task.getOwner();
+        this.parentTaskId = task.getParentTaskId();
+        this.priority = task.getPriority();
+        this.processDefinitionId = task.getProcessDefinitionId();
+        this.processInstanceId = task.getProcessInstanceId();
+        this.taskDefinitionKey = task.getTaskDefinitionKey();
+        this.tenantId = task.getTenantId();
+        this.delegationState = task.getDelegationState();
+        this.createTime = task.getCreateTime();
+        this.dueDate = task.getDueDate();
     }
 
 }
