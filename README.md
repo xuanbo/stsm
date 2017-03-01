@@ -2,21 +2,22 @@
 
 毕业设计-分布式软件测试管理系统的设计与实现
 
-# 1.项目模块
+## 1.项目模块
 
 * common 通用依赖、接口等
 * provide 服务提供方，依赖common
-* web 服务消费方，依赖common
+* web 服务消费方，依赖common，web-ui
+* web-ui vue+webpack前端项目
 * cloud-config-repo 配置信息
 * cloud-config-server 配置服务端
 
-# 2.设计方案
+## 2.设计方案
 
 * 采用dubbo实现分布式rpc，zookeeper作为注册中心
 * web服务部署多个，nginx反向代理，其中要实现session共享，采用spring-session的redis集群存储方案
 * mysql主从复制，读写分离（或者mongo主从复制）
 
-# 3.技术要点
+## 3.技术要点
 
 后端：
 * spring-boot、spring-session、spring-security等全家桶
@@ -31,6 +32,6 @@
 * nginx反向代理
 
 前端：
-* 采用vuejs + webpack + vue各大组件(vue-router、vue-resource、vuex等)
+* 采用vuejs + webpack + vue各大组件(vue-router、vue-resource等)
 * ui采用bootstrap、elementui等
 * 其他插件
