@@ -2,6 +2,8 @@
 
 > web-ui
 
+由于vue+webpack的build文件夹与gradle的build文件夹冲突，将其修改为build-scripts.
+
 ## Build Setup
 
 ``` bash

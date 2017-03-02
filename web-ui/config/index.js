@@ -1,6 +1,10 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 var path = require('path')
 
+// npm run build后将静态资源发布到 xx/web-ui/build/resources/main/ui下
+// gradle build时将ui目录极其下面的文件打成jar
+// 由于web模块依赖web-ui模块，会将web-ui的jar放入web模块的classpath下
+// 然后将/ui/**映射classpath:/ui/就可以访问静态资源了
 var assetsRoot = path.resolve(__dirname, '../build/resources/main/ui')
 module.exports = {
   build: {
@@ -8,7 +12,8 @@ module.exports = {
     index: path.resolve(assetsRoot, 'index.html'),
     assetsRoot: assetsRoot,
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    // 默认是/，由于我将web-ui模块映射到web模块的/ui/**下了，因此要修改，为了正确的显示上下文及路径，这里不加path
+    assetsPublicPath: '',
     productionSourceMap: true,
     // Gzip off by default as many popular static hosts such as
     // Surge or Netlify already gzip all static assets for you.

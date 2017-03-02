@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
@@ -19,8 +20,8 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // 将web-ui模块打包后的ui路径下的静态资源映射到/**
-        registry.addResourceHandler("/**").addResourceLocations("classpath:/ui/");
+        // 将web-ui模块打包后的ui路径下的静态资源映射到web模块的/ui/**路径下
+        registry.addResourceHandler("/ui/**").addResourceLocations("classpath:/ui/");
         super.addResourceHandlers(registry);
     }
 
