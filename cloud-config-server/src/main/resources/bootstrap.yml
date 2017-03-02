@@ -3,5 +3,5 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/xuanbo/stsm
+          uri: https://git.oschina.net/wangxuanbo/stsm
           search-paths: cloud-config-repo
