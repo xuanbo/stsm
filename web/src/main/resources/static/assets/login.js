@@ -4,9 +4,11 @@
            e.preventDefault();
            let username = $('#username').val();
            let password = $('#password').val();
+           let captcha = $('#captcha').val();
            let data = {
                username: username,
-               password: password
+               password: password,
+               captcha: captcha
            };
            $.ajax({
                method: 'POST',
@@ -22,7 +24,13 @@
                }
            }, data => {
                console.log(data.message);
-           })
-       })
+           });
+       });
+       
+       $('#captchaImg').on('click', function () {
+           let src = $(this).attr('src');
+           src = src.split('?')[0] + '?' + Math.random();
+           $(this).attr('src', src);
+       });
     });
 })(jQuery);

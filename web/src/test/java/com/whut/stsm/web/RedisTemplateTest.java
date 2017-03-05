@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.session.data.redis.RedisOperationsSessionRepository;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
@@ -25,6 +26,9 @@ public class RedisTemplateTest {
     @Autowired
     private ApplicationContext ac;
 
+    @Autowired
+    private RedisOperationsSessionRepository sessionRepository;
+
     @Test
     public void show() {
         log.debug("redisTemplate[{}]", redisTemplate.getClass());
@@ -32,5 +36,7 @@ public class RedisTemplateTest {
         for (int i = 0; i < beanNamesForType.length; i++) {
             log.debug("{} -> {}", i + 1, beanNamesForType[i]);
         }
+
+        log.debug("RedisOperationsSessionRepository[{}]", sessionRepository);
     }
 }

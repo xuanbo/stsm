@@ -56,7 +56,7 @@ public class LimitLoginAuthenticationProvider implements AuthenticationProvider 
          *       判断账号是否能正确使用 开始
          *-----------------------------------------------------------*/
         if (userService.getLoginAttemptTimes(username) >= ATTEMPT_TIMES) {
-            throw new LockedException("密码错误5次，账号已被锁定30分钟");
+            throw new LockedException("密码错误5次，账号已被锁定");
         }
         if (!userDetails.isEnabled()) {
             throw new DisabledException("账号已被禁用");

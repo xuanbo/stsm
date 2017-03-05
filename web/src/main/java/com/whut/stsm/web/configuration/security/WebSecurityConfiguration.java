@@ -29,22 +29,22 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Value("${http.permitMvcMatcherUrls}")
     private String[] permitMvcMatcherUrls;
 
-    @Value("${http.login.loginPage]")
+    @Value("${http.login.loginPage}")
     private String loginPage;
 
-    @Value("${http.login.usernameParameter]")
+    @Value("${http.login.usernameParameter}")
     private String usernameParameter;
 
-    @Value("${http.login.passwordParameter]")
+    @Value("${http.login.passwordParameter}")
     private String passwordParameter;
 
-    @Value("${http.logout.logoutUrl]")
+    @Value("${http.logout.logoutUrl}")
     private String logoutUrl;
 
-    @Value("${http.logout.clearAuthentication]")
+    @Value("${http.logout.clearAuthentication}")
     private boolean clearAuthentication;
 
-    @Value("${http.logout.invalidateHttpSession]")
+    @Value("${http.logout.invalidateHttpSession}")
     private boolean invalidateHttpSession;
 
     @Override

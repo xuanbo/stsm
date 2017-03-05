@@ -23,7 +23,7 @@ public class RedisCache<V> implements Cache<String, V>, InitializingBean {
 
     @Override
     public void put(String key, V value) {
-        valueOperations.set(key, value);
+        put(key, value, 30L, TimeUnit.MINUTES);
     }
 
     @Override
