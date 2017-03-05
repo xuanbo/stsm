@@ -33,6 +33,8 @@ subprojects {
         swagger2Version = '2.6.1'
         lombokVersion = '1.16.14'
         springCloudVersion = '1.2.2.RELEASE'
+        kaptchaVersion = '2.3.2'
+        bootstrapVersion = '3.3.5'
     }
 
     dependencies {

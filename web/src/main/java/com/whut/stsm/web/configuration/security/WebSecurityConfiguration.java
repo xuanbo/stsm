@@ -1,5 +1,6 @@
 package com.whut.stsm.web.configuration.security;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 /**
@@ -24,19 +26,45 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+    @Value("${http.permitMvcMatcherUrls}")
+    private String[] permitMvcMatcherUrls;
+
+    @Value("${http.login.loginPage]")
+    private String loginPage;
+
+    @Value("${http.login.usernameParameter]")
+    private String usernameParameter;
+
+    @Value("${http.login.passwordParameter]")
+    private String passwordParameter;
+
+    @Value("${http.logout.logoutUrl]")
+    private String logoutUrl;
+
+    @Value("${http.logout.clearAuthentication]")
+    private boolean clearAuthentication;
+
+    @Value("${http.logout.invalidateHttpSession]")
+    private boolean invalidateHttpSession;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .mvcMatchers("/", "/index").permitAll()
-                .anyRequest().permitAll()
+                .mvcMatchers(permitMvcMatcherUrls).permitAll()
+                .anyRequest().authenticated()
                 .and()
-                .formLogin().permitAll()
+                .formLogin().loginPage(loginPage).permitAll()
+                    .usernameParameter(usernameParameter).passwordParameter(passwordParameter)
                     .successHandler(new RestAuthenticationSuccessHandler())
                     .failureHandler(new RestAuthenticationFailureHandler())
                 .and()
-                .logout().logoutUrl("/logout").logoutSuccessHandler(new RestLogoutSuccessHandler());
+                .logout().logoutUrl(logoutUrl).logoutSuccessHandler(new RestLogoutSuccessHandler())
+                    .clearAuthentication(clearAuthentication).invalidateHttpSession(invalidateHttpSession)
+                .and()
+                // 自定义UsernamePasswordAuthenticationFilter，过滤验证码
+                .addFilterAt(loginAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     /**
@@ -83,6 +111,20 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public UserDetailsService userDetailsService() {
         return new MyUserDetailsServiceImpl();
+    }
+
+    /**
+     * 登录过滤，验证验证码是否正确
+     *
+     * @return LoginAuthenticationFilter
+     */
+    @Bean
+    public LoginAuthenticationFilter loginAuthenticationFilter() throws Exception {
+        LoginAuthenticationFilter loginAuthenticationFilter = new LoginAuthenticationFilter();
+        loginAuthenticationFilter.setAuthenticationManager(authenticationManager());
+        loginAuthenticationFilter.setAuthenticationFailureHandler(authenticationFailureHandler());
+        loginAuthenticationFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler());
+        return loginAuthenticationFilter;
     }
 
     /**

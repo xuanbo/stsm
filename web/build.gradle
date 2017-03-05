@@ -29,5 +29,7 @@ dependencies {
     }
     compile "io.springfox:springfox-swagger2:$swagger2Version"
     compile "io.springfox:springfox-swagger-ui:$swagger2Version"
+    compile "com.github.penggle:kaptcha:$kaptchaVersion"
+    compile "org.webjars:bootstrap:$bootstrapVersion"
     testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
 }

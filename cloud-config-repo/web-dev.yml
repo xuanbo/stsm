@@ -23,3 +23,14 @@ dubbo:
     timeout: 5000
   annotation:
     package: com.whut.stsm.web
+
+http:
+  permitMvcMatcherUrls: /,/index,/webjars/**,/assets/**,/favicon.ico,/captcha
+  login:
+    loginPage: /login
+    usernameParameter: username
+    passwordParameter: password
+  logout:
+    logoutUrl: /logout
+    clearAuthentication: true
+    invalidateHttpSession: true
