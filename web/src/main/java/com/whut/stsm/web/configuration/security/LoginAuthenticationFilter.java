@@ -2,6 +2,7 @@ package com.whut.stsm.web.configuration.security;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -18,11 +19,17 @@ public class LoginAuthenticationFilter extends UsernamePasswordAuthenticationFil
 
     private static final Logger log = LoggerFactory.getLogger(LoginAuthenticationFilter.class);
 
+    @Value("${http.login.captchaParameter}")
+    private String captchaParameter;
+
+    @Value("${http.login.sessionCaptchaParameter}")
+    private String sessionCaptchaParameter;
+
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         // 处理验证码
-        String captcha = request.getParameter("captcha");
-        String sessionCaptcha = (String) request.getSession().getAttribute("captcha");
+        String captcha = request.getParameter(captchaParameter);
+        String sessionCaptcha = (String) request.getSession().getAttribute(sessionCaptchaParameter);
         log.debug("输入的验证码：{}", captcha);
         if(captcha == null || !captcha.equalsIgnoreCase(sessionCaptcha)) {
             throw new CaptchaException("验证码不正确");

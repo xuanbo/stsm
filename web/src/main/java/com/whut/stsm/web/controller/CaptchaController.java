@@ -4,6 +4,7 @@ import com.google.code.kaptcha.impl.DefaultKaptcha;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -26,6 +27,9 @@ public class CaptchaController {
     @Autowired
     private DefaultKaptcha captchaProducer;
 
+    @Value("${http.login.sessionCaptchaParameter}")
+    private String sessionCaptchaParameter;
+
     @GetMapping("/captcha")
     public void captcha(HttpServletRequest request, HttpServletResponse response) {
         response.setDateHeader("Expires", 0);
@@ -38,7 +42,7 @@ public class CaptchaController {
         String capText = captchaProducer.createText();
         log.debug("capText: {}, sessionId: {}", capText, session.getId());
         // 存入session
-        session.setAttribute("captcha", capText);
+        session.setAttribute(sessionCaptchaParameter, capText);
 
         // 验证码图片写入响应
         BufferedImage bi = captchaProducer.createImage(capText);
@@ -46,7 +50,7 @@ public class CaptchaController {
             ImageIO.write(bi, "jpg", out);
             out.flush();
         } catch (IOException e) {
-            log.debug("验证码生成异常", e);
+            log.error("验证码生成异常", e);
         }
     }
 }

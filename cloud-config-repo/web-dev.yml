@@ -24,13 +24,21 @@ dubbo:
   annotation:
     package: com.whut.stsm.web
 
+# http
 http:
+  # 允许访问的资源
   permitMvcMatcherUrls: /,/index,/webjars/**,/assets/**,/favicon.ico,/captcha
   login:
     loginPage: /login
     usernameParameter: username
     passwordParameter: password
+    # 验证码参数
+    captchaParameter: captcha
+    # Session验证码参数
+    sessionCaptchaParameter: sessionCaptcha
   logout:
     logoutUrl: /logout
+    # 清除认证
     clearAuthentication: true
+    # session失效
     invalidateHttpSession: true
