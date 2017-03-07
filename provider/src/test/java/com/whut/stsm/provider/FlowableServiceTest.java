@@ -31,10 +31,10 @@ public class FlowableServiceTest {
     @Test
     public void startProcessInstance() {
         Map<String, Object> variables = new HashMap<>();
-        variables.put("username", "zhangsan");
-//        flowableService.startProcessInstanceByKey("demo", variables);
+        variables.put("username", "user");
+        flowableService.startProcessInstanceByKey("demo", variables);
 //        flowableService.startProcessInstanceByKey("demo", "demoId", variables);
-        flowableService.startProcessInstanceByKey("demo", "demoId", variables, "bobo");
+//        flowableService.startProcessInstanceByKey("demo", "demoId", variables, "bobo");
     }
 
     @Test

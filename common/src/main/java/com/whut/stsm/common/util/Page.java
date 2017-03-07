@@ -73,7 +73,7 @@ public class Page<T> implements Serializable {
                 : this.count / this.size + 1);
         // 当前页大于最后一页的情况
         if (this.current > this.pages) {
-            this.current = this.pages;
+            this.current = this.pages > 0 ? current : 1;
         }
         this.offset = (this.current - 1) * this.size;
         this.last = this.offset + this.size;

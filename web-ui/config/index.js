@@ -35,7 +35,8 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/team/**': 'http://localhost:9090',
-      '/user/**': 'http://localhost:9090'
+      '/user/**': 'http://localhost:9090',
+      '/flowable/**': 'http://localhost:9090'
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README

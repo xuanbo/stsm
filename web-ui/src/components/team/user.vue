@@ -2,8 +2,8 @@
   <div>
     <hr />
     <div class="container">
+      <span>{{ team.name }}</span>
       <el-breadcrumb separator="/" class="pull-right">
-        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
         <el-breadcrumb-item>我的工作台</el-breadcrumb-item>
         <el-breadcrumb-item :to="{ path: '/team' }">我的团队</el-breadcrumb-item>
         <el-breadcrumb-item>团队成员</el-breadcrumb-item>
@@ -44,7 +44,8 @@
           size: 10,
           count: 0
         },
-        tableData: []
+        tableData: [],
+        team: {}
       }
     },
     computed: {
@@ -67,6 +68,14 @@
           if (resp.data.code === 200) {
             this.page = resp.data.data
             this.tableData = this.page.list
+          }
+        }, resp => {
+          console.log(resp.data)
+        })
+        this.$http.get('/team/' + this.$route.params.id).then(resp => {
+          console.log(resp.data.data)
+          if (resp.data.code === 200) {
+            this.team = resp.data.data
           }
         }, resp => {
           console.log(resp.data)

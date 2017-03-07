@@ -34,7 +34,7 @@ public class FlowableController {
     @GetMapping("/task/{assignee}")
     public ResultDTO<?> findTask(@PathVariable String assignee, Page<TaskDTO> page) {
         if (Check.isEmpty(assignee)) {
-            return ResultDTO.fail(401, "assignee不能为空");
+            return ResultDTO.fail(415, "assignee不能为空");
         }
         return ResultDTO.success("success", flowableService.findTask(assignee, page));
     }
