@@ -1,6 +1,7 @@
 package com.whut.stsm.common.service;
 
 import com.whut.stsm.common.dto.UserDTO;
+import com.whut.stsm.common.util.Page;
 
 /**
  * Created by null on 2017/2/22.
@@ -27,4 +28,6 @@ public interface UserService {
     int getLoginAttemptTimes(String username);
 
     void resetLoginAttemptTimes(String username);
+
+    Page<UserDTO> findByTeamId(Long teamId, Page<UserDTO> page);
 }

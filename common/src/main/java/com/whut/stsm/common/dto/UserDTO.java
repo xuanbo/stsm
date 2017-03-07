@@ -45,6 +45,11 @@ public class UserDTO implements Serializable {
     private Boolean enable;
 
     // 其他用户相关属性...
+    @Column
+    private String name;
+
+    @Column
+    private Date createDate;
 
     // 角色
     @OneToOne(cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)

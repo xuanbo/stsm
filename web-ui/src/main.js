@@ -30,9 +30,14 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
 Vue.use(ElementUI)
 
+import core from './config/core'
+Vue.prototype.$core = core
+
 // 创建Vue实例
 new Vue({
   router,
   el: '#app',
   render: (h) => h(App)
 })
+
+core.auth(Vue)

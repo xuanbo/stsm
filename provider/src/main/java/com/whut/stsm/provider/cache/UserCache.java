@@ -8,6 +8,7 @@ import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -72,6 +73,10 @@ public class UserCache extends RedisCache<UserDTO> {
     public void resetLoginAttemptTimes(String username) {
         final String key = namespace + "username_" + username + "_attemptTimes";
         redisTemplate.delete(key);
+    }
+
+    public List<UserDTO> findAll(List<Long> ids) {
+        return userRepository.findAll(ids);
     }
 
 }

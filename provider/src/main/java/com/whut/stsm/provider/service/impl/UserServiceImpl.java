@@ -2,11 +2,19 @@ package com.whut.stsm.provider.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.whut.stsm.common.dto.UserDTO;
+import com.whut.stsm.common.dto.UserTeamDTO;
 import com.whut.stsm.common.service.UserService;
+import com.whut.stsm.common.util.Page;
 import com.whut.stsm.provider.cache.UserCache;
+import com.whut.stsm.provider.dao.UserTeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by null on 2017/2/22.
@@ -18,6 +26,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserCache userCache;
+
+    @Autowired
+    private UserTeamRepository userTeamRepository;
 
     @Override
     @Transactional(value = "jpaTxManager", readOnly = true)
@@ -47,5 +58,16 @@ public class UserServiceImpl implements UserService {
     @Transactional(value = "jpaTxManager")
     public void resetLoginAttemptTimes(String username) {
         userCache.resetLoginAttemptTimes(username);
+    }
+
+    @Override
+    @Transactional(value = "jpaTxManager", readOnly = true)
+    public Page<UserDTO> findByTeamId(Long teamId, Page<UserDTO> page) {
+        page.setCount(userTeamRepository.countByTeamId(teamId));
+        Pageable pageable = new PageRequest(page.getCurrent() - 1, page.getSize());
+        List<Long> userIds = userTeamRepository.findByTeamId(teamId, pageable).getContent()
+                .stream().map(UserTeamDTO::getUserId).collect(Collectors.toList());
+        page.setList(userCache.findAll(userIds));
+        return page;
     }
 }

@@ -33,6 +33,14 @@ public class Page<T> implements Serializable {
         this.size = size > 0 ? size : 10;
     }
 
+    public void setCurrent(int current) {
+        this.current = current > 0 ? current : 1;
+    }
+
+    public void setSize(int size) {
+        this.size = size > 0 ? size : 10;
+    }
+
     public int getCurrent() {
         return current;
     }

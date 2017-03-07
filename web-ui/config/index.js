@@ -1,11 +1,11 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
-var path = require('path')
+const path = require('path')
 
 // npm run build后将静态资源发布到 xx/web-ui/build/resources/main/ui下
 // gradle build时将ui目录极其下面的文件打成jar
 // 由于web模块依赖web-ui模块，会将web-ui的jar放入web模块的classpath下
 // 然后将/ui/**映射classpath:/ui/就可以访问静态资源了
-var assetsRoot = path.resolve(__dirname, '../build/resources/main/ui')
+const assetsRoot = path.resolve(__dirname, '../build/resources/main/ui')
 module.exports = {
   build: {
     env: require('./prod.env'),
@@ -34,7 +34,8 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/api/**': 'http://localhost:8080'
+      '/team/**': 'http://localhost:9090',
+      '/user/**': 'http://localhost:9090'
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README

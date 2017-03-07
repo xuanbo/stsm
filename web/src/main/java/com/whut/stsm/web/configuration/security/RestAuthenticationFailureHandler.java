@@ -1,7 +1,7 @@
 package com.whut.stsm.web.configuration.security;
 
 import com.whut.stsm.common.dto.ResultDTO;
-import com.whut.stsm.common.util.JsonUtil;
+import com.whut.stsm.web.util.Response;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
@@ -9,7 +9,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 /**
  * 自定义登录认证失败处理
@@ -29,15 +28,8 @@ public class RestAuthenticationFailureHandler implements AuthenticationFailureHa
      * @throws ServletException Servlet Exception
      */
     @Override
-    public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
-        httpServletResponse.setCharacterEncoding("UTF-8");
-        // 获取登录认证失败异常信息
-        String error = e.getMessage();
-        // 设置返回json
-        httpServletResponse.setContentType("application/json");
-        PrintWriter writer = httpServletResponse.getWriter();
-        // 发送未认证信息
-        writer.append(JsonUtil.parse(ResultDTO.fail(401, error)));
-        writer.flush();
+    public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
+                                        AuthenticationException e) throws IOException, ServletException {
+        Response.writeJsonAndFlush(httpServletResponse, ResultDTO.fail(401, e.getMessage()));
     }
 }
