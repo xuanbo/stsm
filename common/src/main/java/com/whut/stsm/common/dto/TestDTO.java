@@ -11,21 +11,25 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 工作流任务节点关联的表单
- *
- * Created by null on 2017/3/7.
+ * Created by null on 2017/3/8.
  */
 @Entity
-@Table(name = "t_task_form")
+@Table(name = "t_test")
 @Data
-public class TaskFormDTO implements Serializable {
+public class TestDTO implements Serializable {
 
     @Id
     @GeneratedValue
     private Long id;
 
     @Column
-    private String code;
+    private Long userId;
+
+    @Column
+    private String name;
+
+    @Column
+    private String content;
 
     @Column
     private String description;
@@ -37,12 +41,6 @@ public class TaskFormDTO implements Serializable {
     private Date updateDate;
 
     @Column
-    private String state; // 任务状态
-
-    @Column
-    private Long taskId; // 任务id
-
-    @Column
-    private Long userId; // 任务创建者id
+    private String state;
 
 }

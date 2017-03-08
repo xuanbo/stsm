@@ -11,38 +11,38 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 工作流任务节点关联的表单
+ * 任务表单关联的附件
  *
- * Created by null on 2017/3/7.
+ * Created by null on 2017/3/8.
  */
 @Entity
-@Table(name = "t_task_form")
+@Table(name = "t_file")
 @Data
-public class TaskFormDTO implements Serializable {
+public class FileDTO implements Serializable {
 
     @Id
     @GeneratedValue
     private Long id;
 
     @Column
-    private String code;
+    private Long taskFormId;
 
     @Column
-    private String description;
+    private String name;
+
+    @Column
+    private String fileName;
+
+    @Column
+    private String url;
+
+    @Column
+    private String state;
 
     @Column
     private Date createDate;
 
     @Column
     private Date updateDate;
-
-    @Column
-    private String state; // 任务状态
-
-    @Column
-    private Long taskId; // 任务id
-
-    @Column
-    private Long userId; // 任务创建者id
 
 }

@@ -79,6 +79,17 @@ public class FlowableServiceImpl implements FlowableService {
     }
 
     @Override
+    @Transactional(value = "transactionManager")
+    public void startProcessInstanceById(String id, Map<String, Object> variables, String owner) {
+        identityService.setAuthenticatedUserId(owner);
+        if (Check.isEmpty(variables)) {
+            runtimeService.startProcessInstanceById(id);
+        } else {
+            runtimeService.startProcessInstanceByKey(id, variables);
+        }
+    }
+
+    @Override
     @Transactional(value = "transactionManager", readOnly = true)
     public TaskDTO findTask(String taskId) {
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();

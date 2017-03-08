@@ -24,6 +24,7 @@ public interface FlowableService {
 
     void startProcessInstanceByKey(String key, String businessKey, Map<String, Object> variables, String owner);
 
+    void startProcessInstanceById(String id, Map<String, Object> variables, String owner);
     /***************************************************************************************
      *  task
      **************************************************************************************/
