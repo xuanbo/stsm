@@ -1,6 +1,7 @@
 package com.whut.stsm.provider.cache;
 
 import com.whut.stsm.common.dto.DemoDTO;
+import com.whut.stsm.common.util.Check;
 import com.whut.stsm.provider.dao.DemoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,8 +36,8 @@ public class DemoCache extends RedisCache<DemoDTO> {
         return persistDemoDTOOptional;
     }
 
-    public void save(DemoDTO demoDTO) {
-        demoRepository.save(demoDTO);
+    public DemoDTO save(DemoDTO demoDTO) {
+        return demoRepository.save(demoDTO);
     }
 
 }

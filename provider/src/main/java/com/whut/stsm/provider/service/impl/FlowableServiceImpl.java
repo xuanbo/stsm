@@ -1,21 +1,32 @@
 package com.whut.stsm.provider.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.whut.stsm.common.dto.FileDTO;
+import com.whut.stsm.common.dto.ProcessDefinitionDTO;
 import com.whut.stsm.common.dto.TaskDTO;
+import com.whut.stsm.common.dto.TestDTO;
 import com.whut.stsm.common.service.FlowableService;
+import com.whut.stsm.common.service.TestService;
 import com.whut.stsm.common.util.Check;
 import com.whut.stsm.common.util.Page;
 import org.flowable.engine.IdentityService;
+import org.flowable.engine.RepositoryService;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.TaskService;
+import org.flowable.engine.repository.ProcessDefinition;
+import org.flowable.engine.repository.ProcessDefinitionQuery;
 import org.flowable.engine.task.Task;
 import org.flowable.engine.task.TaskQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.FileCopyUtils;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,62 +42,98 @@ public class FlowableServiceImpl implements FlowableService {
     private RuntimeService runtimeService;
 
     @Autowired
+    private RepositoryService repositoryService;
+
+    @Autowired
     private TaskService taskService;
 
     @Autowired
     private IdentityService identityService;
 
+
+    @Autowired
+    private TestService testService;
+
     @Override
     @Transactional(value = "transactionManager")
-    public void startProcessInstanceByKey(String key, Map<String, Object> variables) {
+    public void startProcessInstanceByKey(String processDefinitionKey, Map<String, Object> variables) {
         if (Check.isEmpty(variables)) {
-            runtimeService.startProcessInstanceByKey(key);
+            runtimeService.startProcessInstanceByKey(processDefinitionKey);
         } else {
-            runtimeService.startProcessInstanceByKey(key, variables);
+            runtimeService.startProcessInstanceByKey(processDefinitionKey, variables);
         }
     }
 
     @Override
     @Transactional(value = "transactionManager")
-    public void startProcessInstanceByKey(String key, Map<String, Object> variables, String owner) {
+    public void startProcessInstanceByKey(String processDefinitionKey, Map<String, Object> variables, String owner) {
         identityService.setAuthenticatedUserId(owner);
         if (Check.isEmpty(variables)) {
-            runtimeService.startProcessInstanceByKey(key);
+            runtimeService.startProcessInstanceByKey(processDefinitionKey);
         } else {
-            runtimeService.startProcessInstanceByKey(key, variables);
+            runtimeService.startProcessInstanceByKey(processDefinitionKey, variables);
         }
     }
 
     @Override
     @Transactional(value = "transactionManager")
-    public void startProcessInstanceByKey(String key, String businessKey, Map<String, Object> variables) {
+    public void startProcessInstanceByKey(String processDefinitionKey, String businessKey,
+                                          Map<String, Object> variables) {
         if (Check.isEmpty(variables)) {
-            runtimeService.startProcessInstanceByKey(key, businessKey);
+            runtimeService.startProcessInstanceByKey(processDefinitionKey, businessKey);
         } else {
-            runtimeService.startProcessInstanceByKey(key, businessKey, variables);
+            runtimeService.startProcessInstanceByKey(processDefinitionKey, businessKey, variables);
         }
     }
 
     @Override
     @Transactional(value = "transactionManager")
-    public void startProcessInstanceByKey(String key, String businessKey, Map<String, Object> variables, String owner) {
+    public void startProcessInstanceByKey(String processDefinitionKey, String businessKey,
+                                          Map<String, Object> variables, String owner) {
         identityService.setAuthenticatedUserId(owner);
         if (Check.isEmpty(variables)) {
-            runtimeService.startProcessInstanceByKey(key, businessKey);
+            runtimeService.startProcessInstanceByKey(processDefinitionKey, businessKey);
         } else {
-            runtimeService.startProcessInstanceByKey(key, businessKey, variables);
+            runtimeService.startProcessInstanceByKey(processDefinitionKey, businessKey, variables);
         }
     }
 
     @Override
     @Transactional(value = "transactionManager")
-    public void startProcessInstanceById(String id, Map<String, Object> variables, String owner) {
+    public void startProcessInstanceById(String processDefinitionId, Map<String, Object> variables, String owner) {
         identityService.setAuthenticatedUserId(owner);
         if (Check.isEmpty(variables)) {
-            runtimeService.startProcessInstanceById(id);
+            runtimeService.startProcessInstanceById(processDefinitionId);
         } else {
-            runtimeService.startProcessInstanceByKey(id, variables);
+            runtimeService.startProcessInstanceById(processDefinitionId, variables);
         }
+    }
+
+    @Override
+    @Transactional(value = "transactionManager")
+    public void startProcessInstanceById(String processDefinitionId, String businessKey, Map<String, Object> variables,
+                                         String owner) {
+        identityService.setAuthenticatedUserId(owner);
+        if (Check.isEmpty(variables)) {
+            runtimeService.startProcessInstanceById(processDefinitionId, businessKey);
+        } else {
+            runtimeService.startProcessInstanceById(processDefinitionId, businessKey, variables);
+        }
+    }
+
+    @Override
+    @Transactional(value = "transactionManager", readOnly = true)
+    public Page<ProcessDefinitionDTO> findProcessDefinition(Page<ProcessDefinitionDTO> page) {
+        ProcessDefinitionQuery processDefinitionQuery = repositoryService.createProcessDefinitionQuery()
+                .orderByProcessDefinitionVersion().desc();
+        return pageHelper(processDefinitionQuery, page);
+    }
+
+    @Override
+    @Transactional(value = "transactionManager", readOnly = true)
+    public byte[] getResourceAsBytes(String processDefinitionId) throws IOException {
+        InputStream inputStream = repositoryService.getProcessDiagram(processDefinitionId);
+        return FileCopyUtils.copyToByteArray(inputStream);
     }
 
     @Override
@@ -151,6 +198,23 @@ public class FlowableServiceImpl implements FlowableService {
                 .getBusinessKey();
     }
 
+    @Override
+    @Transactional(value = "transactionManager")
+    public void startTestProcess(String assignee, TestDTO testDTO, FileDTO fileDTO) {
+        // 保存测试清单
+        TestDTO persistTestDTO = testService.save(testDTO);
+        // 保存测试清单附件
+
+        // 启动测试流程
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("username", assignee);
+        String owner = persistTestDTO.getUserId().toString();
+        this.startProcessInstanceById(persistTestDTO.getProcessDefinitionId(), variables, owner);
+    }
+
+    /*********************************************************************************
+     * 分页处理
+     ********************************************************************************/
     private Page<TaskDTO> pageHelper(TaskQuery taskQuery, Page<TaskDTO> page) {
         long count = taskQuery.count();
         page.setCount(count);
@@ -158,6 +222,18 @@ public class FlowableServiceImpl implements FlowableService {
         final List<TaskDTO> taskDTOS = new ArrayList<>(tasks.size());
         tasks.forEach(task -> taskDTOS.add(new TaskDTO(task)));
         page.setList(taskDTOS);
+        return page;
+    }
+
+    private Page<ProcessDefinitionDTO> pageHelper(ProcessDefinitionQuery processDefinitionQuery,
+                                                  Page<ProcessDefinitionDTO> page) {
+        long count = processDefinitionQuery.count();
+        page.setCount(count);
+        List<ProcessDefinition> processDefinitions = processDefinitionQuery.listPage(page.getOffset(), page.getSize());
+        final List<ProcessDefinitionDTO> processDefinitionDTOS = new ArrayList<>(processDefinitions.size());
+        processDefinitions.forEach(processDefinition ->
+                processDefinitionDTOS.add(new ProcessDefinitionDTO(processDefinition)));
+        page.setList(processDefinitionDTOS);
         return page;
     }
 }

@@ -1,8 +1,13 @@
 package com.whut.stsm.common.service;
 
+import com.whut.stsm.common.dto.FileDTO;
+import com.whut.stsm.common.dto.ProcessDefinitionDTO;
 import com.whut.stsm.common.dto.TaskDTO;
+import com.whut.stsm.common.dto.TestDTO;
 import com.whut.stsm.common.util.Page;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.Map;
 
@@ -16,15 +21,23 @@ public interface FlowableService {
     /***************************************************************************************
      *  process
      **************************************************************************************/
-    void startProcessInstanceByKey(String key, Map<String, Object> variables);
+    void startProcessInstanceByKey(String processDefinitionKey, Map<String, Object> variables);
 
-    void startProcessInstanceByKey(String key, Map<String, Object> variables, String owner);
+    void startProcessInstanceByKey(String processDefinitionKey, Map<String, Object> variables, String owner);
 
-    void startProcessInstanceByKey(String key, String businessKey, Map<String, Object> variables);
+    void startProcessInstanceByKey(String processDefinitionKey, String businessKey, Map<String, Object> variables);
 
-    void startProcessInstanceByKey(String key, String businessKey, Map<String, Object> variables, String owner);
+    void startProcessInstanceByKey(String processDefinitionKey, String businessKey, Map<String, Object> variables, String owner);
 
-    void startProcessInstanceById(String id, Map<String, Object> variables, String owner);
+    void startProcessInstanceById(String processDefinitionId, Map<String, Object> variables, String owner);
+
+    void startProcessInstanceById(String processDefinitionId, String businessKey, Map<String, Object> variables, String owner);
+
+    Page<ProcessDefinitionDTO> findProcessDefinition(Page<ProcessDefinitionDTO> page);
+
+    byte[] getResourceAsBytes(String processDefinitionId) throws IOException;
+
+
     /***************************************************************************************
      *  task
      **************************************************************************************/
@@ -41,4 +54,10 @@ public interface FlowableService {
     void completeTask(String taskId, Map<String, Object> variables);
 
     String getBusinessKeyByTaskId(String taskId);
+
+
+    /***************************************************************************************
+     *  流程业务逻辑
+     **************************************************************************************/
+    void startTestProcess(String assignee, TestDTO testDTO, FileDTO fileDTO);
 }

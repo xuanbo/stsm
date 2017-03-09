@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +34,7 @@ public class FlowableServiceTest {
     @Test
     public void startProcessInstance() {
         Map<String, Object> variables = new HashMap<>();
-        variables.put("username", "user");
+        variables.put("username", "zhangsan");
 //        flowableService.startProcessInstanceByKey("demo", variables);
 //        flowableService.startProcessInstanceByKey("demo", "demoId", variables);
         flowableService.startProcessInstanceByKey("basicTestProcess", "1", variables, "admin");

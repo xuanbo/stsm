@@ -25,7 +25,10 @@ public class FileDTO implements Serializable {
     private Long id;
 
     @Column
-    private Long taskFormId;
+    private Long taskFormId; // 每一个任务节点上传附件
+
+    @Column
+    private Long testId; // 提交测试流程时上传附件
 
     @Column
     private String name;
@@ -44,5 +47,8 @@ public class FileDTO implements Serializable {
 
     @Column
     private Date updateDate;
+
+    @Column
+    private boolean show; // 文件是否删掉
 
 }

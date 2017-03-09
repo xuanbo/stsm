@@ -11,6 +11,9 @@
           <router-link to="/team">我的团队</router-link>
         </el-menu-item>
       </el-submenu>
+      <el-menu-item index="3">
+        <router-link to="/process">流程</router-link>
+      </el-menu-item>
     </el-menu>
   </div>
 </template>

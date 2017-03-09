@@ -2,26 +2,28 @@
   <div>
     <h3>代办任务</h3>
     <hr />
-    <div v-if="hasTask">
-    	<el-row>
-	      <el-col :span="8" v-for="(task, index) in tasks" :key="task.id">
-	        <el-card>
-	          <div>
-	            <span>{{ '任务名称：' + task.name }}</span>
-	            <div class="bottom clearfix">
-	              <time class="time">
-                  <span>任务创建时间： </span>
-                  {{ task.createTime | parseToDate }}
-                </time>
-	              <el-button type="text" class="button">查看任务</el-button>
-	            </div>
-	          </div>
-	        </el-card>
-	      </el-col>
-	    </el-row>
-    </div>
-    <div v-else>
-    	<h3 class="text-center">暂无任务</h3>
+    <div v-loading="loading" element-loading-text="拼命加载中">
+      <div v-if="hasTask">
+        <el-row>
+          <el-col :span="8" v-for="(task, index) in tasks" :key="task.id">
+            <el-card>
+              <div>
+                <span>{{ '任务名称：' + task.name }}</span>
+                <div class="bottom clearfix">
+                  <time class="time">
+                    <span>任务创建时间： </span>
+                    {{ task.createTime | parseToDate }}
+                  </time>
+                  <el-button type="text" class="button">查看任务</el-button>
+                </div>
+              </div>
+            </el-card>
+          </el-col>
+        </el-row>
+      </div>
+      <div v-if="!loading && !hasTask">
+        <h3 class="text-center">暂无任务</h3>
+      </div>
     </div>
   </div>
 
@@ -34,11 +36,13 @@
       return {
         msg: '你有以下任务需要办理',
         activeNames: ['1'],
-        tasks: []
+        tasks: [],
+        loading: true
       }
     },
     mounted () {
-      this.getData()
+      let self = this
+      setTimeout(self.getData, 1000)
     },
     filters: {
       parseToDate (val) {
@@ -57,6 +61,7 @@
           console.log(resp.data)
           if (resp.data.code === 200) {
             this.tasks = resp.data.data.list
+            this.loading = false
           }
         }, resp => {
           console.log(resp.data)

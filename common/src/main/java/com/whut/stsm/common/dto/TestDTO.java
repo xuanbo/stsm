@@ -26,6 +26,9 @@ public class TestDTO implements Serializable {
     private Long userId;
 
     @Column
+    private String processDefinitionId;
+
+    @Column
     private String name;
 
     @Column

@@ -32,8 +32,8 @@ public class DemoServiceImpl implements DemoService {
 
     @Override
     @Transactional(value = "jpaTxManager")
-    public void save(DemoDTO demoDTO) {
-        demoCache.save(demoDTO);
+    public DemoDTO save(DemoDTO demoDTO) {
+        return demoCache.save(demoDTO);
     }
 
 }

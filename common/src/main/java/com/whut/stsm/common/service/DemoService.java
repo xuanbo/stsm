@@ -11,6 +11,6 @@ public interface DemoService {
 
     DemoDTO findById(Long id);
 
-    void save(DemoDTO demoDTO);
+    DemoDTO save(DemoDTO demoDTO);
 
 }

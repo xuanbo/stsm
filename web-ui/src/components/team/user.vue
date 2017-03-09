@@ -4,6 +4,7 @@
     <div class="container">
       <span>{{ team.name }}</span>
       <el-breadcrumb separator="/" class="pull-right">
+        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
         <el-breadcrumb-item>我的工作台</el-breadcrumb-item>
         <el-breadcrumb-item :to="{ path: '/team' }">我的团队</el-breadcrumb-item>
         <el-breadcrumb-item>团队成员</el-breadcrumb-item>

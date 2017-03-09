@@ -17,12 +17,30 @@ public class Check {
         return value == null;
     }
 
+    public static boolean hasAnyNull(String... values) {
+        for (String value : values) {
+            if (isNull(value)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static boolean isNotNull(String value) {
         return !isNull(value);
     }
 
     public static boolean isEmpty(String value) {
         return isNull(value) || value.isEmpty();
+    }
+
+    public static boolean hasAnyEmpty(String... values) {
+        for (String value : values) {
+            if (isEmpty(value)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static boolean isNotEmpty(String value) {
