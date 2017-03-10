@@ -6,6 +6,7 @@ import com.whut.stsm.common.dto.UserDTO;
 import com.whut.stsm.common.service.UserService;
 import com.whut.stsm.common.util.Page;
 import com.whut.stsm.web.configuration.security.MyUserDetails;
+import com.whut.stsm.web.context.UserContext;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -28,7 +29,7 @@ public class UserController {
     @ApiOperation(value = "获取当前认证用户信息", response = ResultDTO.class)
     @GetMapping("/me")
     public ResultDTO<?> me() {
-        String username = getCurrentUsername();
+        String username = UserContext.getCurrentUsername();
         UserDTO userDTO = userService.findByUsername(username);
         userDTO.setPassword(null);
         return ResultDTO.success(null, userDTO);
@@ -44,11 +45,4 @@ public class UserController {
         return ResultDTO.success(null, userService.findByTeamId(teamId, page));
     }
 
-    private String getCurrentUsername() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof MyUserDetails) {
-            return ((MyUserDetails) principal).getUsername();
-        }
-        return null;
-    }
 }

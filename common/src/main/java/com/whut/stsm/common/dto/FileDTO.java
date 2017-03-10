@@ -31,13 +31,13 @@ public class FileDTO implements Serializable {
     private Long testId; // 提交测试流程时上传附件
 
     @Column
-    private String name;
+    private String originFileName; // 文件原始名
 
     @Column
-    private String fileName;
+    private String serverFileName; // 文件在服务端更改后的名称
 
     @Column
-    private String url;
+    private String url; // 文件在服务端的相对路径 年/月/日/username
 
     @Column
     private String state;
@@ -49,6 +49,6 @@ public class FileDTO implements Serializable {
     private Date updateDate;
 
     @Column
-    private boolean show; // 文件是否删掉
+    private Boolean hide; // 文件是否删掉
 
 }

@@ -5,6 +5,7 @@ import com.whut.stsm.common.dto.FileDTO;
 import com.whut.stsm.common.dto.ProcessDefinitionDTO;
 import com.whut.stsm.common.dto.TaskDTO;
 import com.whut.stsm.common.dto.TestDTO;
+import com.whut.stsm.common.service.FileService;
 import com.whut.stsm.common.service.FlowableService;
 import com.whut.stsm.common.service.TestService;
 import com.whut.stsm.common.util.Check;
@@ -53,6 +54,9 @@ public class FlowableServiceImpl implements FlowableService {
 
     @Autowired
     private TestService testService;
+
+    @Autowired
+    private FileService fileService;
 
     @Override
     @Transactional(value = "transactionManager")
@@ -198,16 +202,25 @@ public class FlowableServiceImpl implements FlowableService {
                 .getBusinessKey();
     }
 
+    /**
+     * 这里采用了jpa和mybatis操作数据库，采用jap的事务管理器
+     *
+     * @param testDTO TestDTO
+     * @param fileDTO fileDTO
+     */
     @Override
-    @Transactional(value = "transactionManager")
-    public void startTestProcess(String assignee, TestDTO testDTO, FileDTO fileDTO) {
+    @Transactional(value = "jpaTxManager")
+    public void startTestProcess(TestDTO testDTO, FileDTO fileDTO) {
         // 保存测试清单
         TestDTO persistTestDTO = testService.save(testDTO);
         // 保存测试清单附件
-
+        if (Check.isNotNull(fileDTO)) {
+            fileDTO.setTestId(persistTestDTO.getId());
+            fileService.save(fileDTO);
+        }
         // 启动测试流程
         Map<String, Object> variables = new HashMap<>();
-        variables.put("username", assignee);
+        variables.put("username", testDTO.getAssignee());
         String owner = persistTestDTO.getUserId().toString();
         this.startProcessInstanceById(persistTestDTO.getProcessDefinitionId(), variables, owner);
     }

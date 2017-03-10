@@ -7,7 +7,6 @@ import com.whut.stsm.common.dto.TestDTO;
 import com.whut.stsm.common.util.Page;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Date;
 import java.util.Map;
 
@@ -59,5 +58,5 @@ public interface FlowableService {
     /***************************************************************************************
      *  流程业务逻辑
      **************************************************************************************/
-    void startTestProcess(String assignee, TestDTO testDTO, FileDTO fileDTO);
+    void startTestProcess(TestDTO testDTO, FileDTO fileDTO);
 }
