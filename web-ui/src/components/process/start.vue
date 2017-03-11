@@ -24,8 +24,8 @@
         </el-form-item>
         <!-- 指派团队成员 -->
         <el-form-item label="指派团队成员" prop="assignee">
-          <el-cascader id="searchAssignee" placeholder="试试搜索：zhangsan" :options="assignees"
-                       filterable :debounce=1000 @change="setAssignee"></el-cascader>
+          <el-cascader id="searchAssignee" placeholder="搜索账号：zhangsan" :options="assignees"
+                       filterable :debounce=1000 :clearable="true" @change="setAssignee"></el-cascader>
         </el-form-item>
         <!-- 选择附件 -->
         <el-form-item>
@@ -76,7 +76,9 @@
       $('#searchAssignee .el-input__inner').on('input', (e) => {
         let searchAssignee = e.target.value
         console.log(searchAssignee)
-        self.assigneeChange(searchAssignee)
+        if (searchAssignee) {
+          self.assigneeChange(searchAssignee)
+        }
       })
     },
     methods: {
@@ -103,7 +105,21 @@
       // 搜索团队成员改变
       assigneeChange (searchAssignee) {
         console.log(searchAssignee)
-        this.assignees = [{label: '李四', value: 'lisi'}, {label: '王五', value: 'wangwu'}]
+        let params = {
+          usernameLike: searchAssignee
+        }
+        this.$http.get('/user/searchByUsernameLike', {params: params}).then(resp => {
+          let users = resp.data.data
+          users = !users ? [] : users
+          let assignees = []
+          for (let i = 0; i < users.length; ++i) {
+            assignees.push({value: users[i].username, label: users[i].name + '(' + users[i].username + ')'})
+          }
+          this.assignees = assignees
+        }, resp => {
+          console.log(resp.data)
+          this.assignees = []
+        })
       },
       setAssignee (val) {
         this.ruleForm.assignee = val[0]

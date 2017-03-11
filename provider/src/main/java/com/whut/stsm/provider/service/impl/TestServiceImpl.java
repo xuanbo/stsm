@@ -24,4 +24,10 @@ public class TestServiceImpl implements TestService {
     public TestDTO save(TestDTO testDTO) {
         return testRepository.save(testDTO);
     }
+
+    @Override
+    @Transactional(value = "jpaTxManager")
+    public TestDTO findById(Long id) {
+        return testRepository.findOne(id);
+    }
 }

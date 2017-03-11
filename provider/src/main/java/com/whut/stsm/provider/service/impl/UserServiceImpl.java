@@ -8,12 +8,14 @@ import com.whut.stsm.common.util.Page;
 import com.whut.stsm.provider.cache.UserCache;
 import com.whut.stsm.provider.dao.UserTeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -34,6 +36,22 @@ public class UserServiceImpl implements UserService {
     @Transactional(value = "jpaTxManager", readOnly = true)
     public UserDTO findByUsername(String username) {
         return userCache.findByUsername(username).orElse(null);
+    }
+
+    @Override
+    @Transactional(value = "jpaTxManager", readOnly = true)
+    public List<UserDTO> findByUsernameLike(String username, String usernameLike) {
+        Optional<UserDTO> userDTOOptional = userCache.findByUsername(username);
+        if (!userDTOOptional.isPresent()) {
+            return null;
+        }
+        // 查询该用户所在的团队
+        UserDTO userDTO = userDTOOptional.get();
+        UserTeamDTO userTeamDTO = new UserTeamDTO();
+        userTeamDTO.setUserId(userDTO.getId());
+        List<Long> teamIds = userTeamRepository.findAll(Example.of(userTeamDTO))
+                .stream().map(UserTeamDTO::getTeamId).collect(Collectors.toList());
+        return userCache.findByUsernameLike(usernameLike, teamIds);
     }
 
     @Override

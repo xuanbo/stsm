@@ -14,7 +14,7 @@
                     <span>任务创建时间： </span>
                     {{ task.createTime | parseToDate }}
                   </time>
-                  <el-button type="text" class="button">查看任务</el-button>
+                  <el-button type="text" class="button" @click="showTask(task.id)">查看任务</el-button>
                 </div>
               </div>
             </el-card>
@@ -35,7 +35,6 @@
     data () {
       return {
         msg: '你有以下任务需要办理',
-        activeNames: ['1'],
         tasks: [],
         loading: true
       }
@@ -57,7 +56,7 @@
     methods: {
       getData () {
         let username = this.$core.getUser().username
-        this.$http.get('/flowable/task/' + username).then(resp => {
+        this.$http.get('/flowable/tasks/' + username).then(resp => {
           console.log(resp.data)
           if (resp.data.code === 200) {
             this.tasks = resp.data.data.list
@@ -67,8 +66,8 @@
           console.log(resp.data)
         })
       },
-      handleChange (activeNames) {
-        console.log(activeNames)
+      showTask (id) {
+        this.$router.push({path: '/task/' + id})
       }
     }
   }

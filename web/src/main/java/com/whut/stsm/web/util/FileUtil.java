@@ -1,6 +1,8 @@
 package com.whut.stsm.web.util;
 
 import com.whut.stsm.common.dto.FileDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -14,6 +16,8 @@ import java.util.Date;
  */
 public class FileUtil {
 
+    private static final Logger log = LoggerFactory.getLogger(FileUtil.class);
+
     /**
      * 文件保存在服务端
      *
@@ -25,12 +29,16 @@ public class FileUtil {
     public static FileDTO copy(String fileRootPath, String fileRelativePath, MultipartFile file)
             throws IOException {
         if (file.isEmpty()) {
+            log.debug("file isEmpty");
             return null;
         }
         String originalFilename = file.getOriginalFilename();
+        log.debug("originalFilename[{}]", originalFilename);
         // 时间撮 + 原始文件名
         String serverFileName = System.currentTimeMillis() + originalFilename;
+        log.debug("serverFileName[{}]", serverFileName);
         String filePath = fileRootPath + File.separator + fileRelativePath;
+        log.debug("filePath[{}]", serverFileName);
         File dir = new File(filePath);
         if (!dir.exists()) {
             dir.mkdirs();

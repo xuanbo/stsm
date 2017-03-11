@@ -64,7 +64,7 @@
           current: this.page.current,
           size: this.page.size
         }
-        this.$http.get('/user/search', {params: params}).then(resp => {
+        this.$http.get('/user/searchByTeamId', {params: params}).then(resp => {
           console.log(resp.data.data)
           if (resp.data.code === 200) {
             this.page = resp.data.data

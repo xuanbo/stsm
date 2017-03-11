@@ -32,6 +32,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 同时调动jpa和mybatis时，事务管理器采用jap的，以为前者从后者的connection中抽象出session
+ *
  * Created by null on 2017/2/28.
  */
 @Component
@@ -141,10 +143,17 @@ public class FlowableServiceImpl implements FlowableService {
     }
 
     @Override
-    @Transactional(value = "transactionManager", readOnly = true)
+    @Transactional(value = "jpaTxManager", readOnly = true)
     public TaskDTO findTask(String taskId) {
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
-        return Check.isNull(task) ? new TaskDTO() : new TaskDTO(task);
+        if (Check.isNull(task)) {
+            return null;
+        }
+        TaskDTO taskDTO = new TaskDTO(task);
+        // 获取businessKey
+        long testId = Long.parseLong(this.getBusinessKeyByTaskId(taskId));
+        taskDTO.setTestDTO(testService.findById(testId));
+        return taskDTO;
     }
 
     @Override

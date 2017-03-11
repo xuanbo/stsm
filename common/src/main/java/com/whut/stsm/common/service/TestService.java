@@ -9,4 +9,6 @@ public interface TestService {
 
     TestDTO save(TestDTO testDTO);
 
+    TestDTO findById(Long id);
+
 }

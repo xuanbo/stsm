@@ -51,13 +51,22 @@ public class FlowableController {
     @Reference
     private UserService userService;
 
+    @ApiOperation(value = "根据taskId查询具体任务", response = ResultDTO.class)
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "path", name = "id", required = true)
+    })
+    @GetMapping("/task/{id}")
+    public ResultDTO<?> findTask(@PathVariable String id) {
+        return ResultDTO.success(null, flowableService.findTask(id));
+    }
+
     @ApiOperation(value = "根据assignee查询个人任务", response = ResultDTO.class)
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "path", name = "assignee", required = true),
             @ApiImplicitParam(paramType = "query", name = "page")
     })
-    @GetMapping("/task/{assignee}")
-    public ResultDTO<?> findTask(@PathVariable String assignee, Page<TaskDTO> page) {
+    @GetMapping("/tasks/{assignee}")
+    public ResultDTO<?> findTasks(@PathVariable String assignee, Page<TaskDTO> page) {
         if (Check.isEmpty(assignee)) {
             return ResultDTO.fail(415, "assignee不能为空");
         }
@@ -96,7 +105,6 @@ public class FlowableController {
     })
     @PostMapping(value = "/process/start")
     public ResultDTO<?> startTestProcess(@RequestPart(required = false) MultipartFile file, TestDTO testDTO) {
-        log.debug("file name {}", file.getOriginalFilename());
         log.debug("testDTO[{}]", testDTO);
         // 流程清单填写者
         String username = UserContext.getCurrentUsername();

@@ -10,6 +10,9 @@ import teamUser from '../components/team/user'
 import processIndex from '../components/process/index'
 import processStart from '../components/process/start'
 
+// task
+import taskShow from '../components/task/show'
+
 // 配置路由
 export default [{
   path: '/',
@@ -26,6 +29,9 @@ export default [{
 }, {
   path: '/process/:id/start',
   component: processStart
+}, {
+  path: '/task/:id',
+  component: taskShow
 }, {
   path: '*',
   component: notFound

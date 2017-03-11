@@ -4,7 +4,6 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.whut.stsm.common.dto.ResultDTO;
 import com.whut.stsm.common.dto.TeamDTO;
 import com.whut.stsm.common.service.TeamService;
-import com.whut.stsm.common.util.Check;
 import com.whut.stsm.common.util.Page;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;

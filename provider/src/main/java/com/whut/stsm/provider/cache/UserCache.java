@@ -79,4 +79,14 @@ public class UserCache extends RedisCache<UserDTO> {
         return userRepository.findAll(ids);
     }
 
+    /**
+     * 根据username模糊查询在给定团队中的用户，只取前10条
+     *
+     * @param usernameLike 查询的username
+     * @param teamIds 在所在的团队中查询
+     * @return List<UserDTO>
+     */
+    public List<UserDTO> findByUsernameLike(String usernameLike, List<Long> teamIds) {
+        return userRepository.findByUsernameLikeAndTeamIdIn(usernameLike, teamIds);
+    }
 }

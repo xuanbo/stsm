@@ -1,6 +1,7 @@
 package com.whut.stsm.common.dto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.flowable.engine.task.DelegationState;
 import org.flowable.engine.task.Task;
 
@@ -13,6 +14,7 @@ import java.util.Date;
  * Created by null on 2017/2/28.
  */
 @Data
+@NoArgsConstructor
 public class TaskDTO implements Serializable {
 
     private String id;
@@ -46,8 +48,9 @@ public class TaskDTO implements Serializable {
     // 持续时间
     private Date dueDate;
 
-    public TaskDTO() {
-    }
+
+    // 关联业务表
+    private TestDTO testDTO;
 
     public TaskDTO(Task task) {
         this.id = task.getId();
