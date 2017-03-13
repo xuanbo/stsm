@@ -1,7 +1,6 @@
 package com.whut.stsm.provider.dao;
 
 import com.whut.stsm.common.dto.FileDTO;
-import com.whut.stsm.common.dto.TestDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

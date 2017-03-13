@@ -2,7 +2,6 @@ package com.whut.stsm.common.service;
 
 import com.whut.stsm.common.dto.HistoryTaskDTO;
 import com.whut.stsm.common.util.Page;
-import org.flowable.engine.history.HistoricVariableInstance;
 
 import java.util.Date;
 

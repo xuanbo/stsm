@@ -7,7 +7,6 @@ import com.whut.stsm.common.service.TeamService;
 import com.whut.stsm.common.util.Page;
 import com.whut.stsm.provider.dao.TeamRepository;
 import com.whut.stsm.provider.dao.UserTeamRepository;
-import com.whut.stsm.provider.util.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

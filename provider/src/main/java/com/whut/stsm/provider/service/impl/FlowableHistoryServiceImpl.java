@@ -7,7 +7,6 @@ import com.whut.stsm.common.util.Page;
 import org.flowable.engine.HistoryService;
 import org.flowable.engine.history.HistoricTaskInstance;
 import org.flowable.engine.history.HistoricTaskInstanceQuery;
-import org.flowable.engine.history.HistoricVariableInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
