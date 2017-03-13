@@ -9,4 +9,10 @@ public interface FileService {
 
     FileDTO save(FileDTO fileDTO);
 
+    FileDTO findById(Long id);
+
+    FileDTO findByTestId(Long testId);
+
+    FileDTO findByTaskFormId(Long taskFormId);
+
 }

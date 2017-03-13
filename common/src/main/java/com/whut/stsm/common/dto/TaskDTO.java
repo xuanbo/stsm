@@ -51,6 +51,10 @@ public class TaskDTO implements Serializable {
 
     // 关联业务表
     private TestDTO testDTO;
+    // 上一个任务节点关联的表单
+    private TaskFormDTO beforeTaskFormDTO;
+    // 工作流任务节点关联的表单
+    private TaskFormDTO currentTaskFormDTO;
 
     public TaskDTO(Task task) {
         this.id = task.getId();

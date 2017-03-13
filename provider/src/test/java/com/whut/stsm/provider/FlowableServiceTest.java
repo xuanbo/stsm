@@ -57,12 +57,13 @@ public class FlowableServiceTest {
 
         variables = new HashMap<>();
         variables.put("username", "lisi");
-        flowableService.completeTask("5014", variables);
+        variables.put("taskFormId", "11");
+        flowableService.completeTask("5003", variables);
     }
 
     @Test
     public void getTaskVariables() {
-        flowableService.getTaskVariables("2503").forEach((key, value) -> log.debug("{} -> {}", key, value));
+        flowableService.getTaskVariables("5003").forEach((key, value) -> log.debug("{} -> {}", key, value));
     }
 
     @Test

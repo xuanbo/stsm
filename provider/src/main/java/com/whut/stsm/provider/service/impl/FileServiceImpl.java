@@ -24,4 +24,22 @@ public class FileServiceImpl implements FileService {
     public FileDTO save(FileDTO fileDTO) {
         return fileRepository.save(fileDTO);
     }
+
+    @Override
+    @Transactional(value = "jpaTxManager", readOnly = true)
+    public FileDTO findById(Long id) {
+        return fileRepository.findOne(id);
+    }
+
+    @Override
+    @Transactional(value = "jpaTxManager", readOnly = true)
+    public FileDTO findByTestId(Long testId) {
+        return fileRepository.findByTestId(testId);
+    }
+
+    @Override
+    @Transactional(value = "jpaTxManager", readOnly = true)
+    public FileDTO findByTaskFormId(Long taskFormId) {
+        return fileRepository.findByTaskFormId(taskFormId);
+    }
 }

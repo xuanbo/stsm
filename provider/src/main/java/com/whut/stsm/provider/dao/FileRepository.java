@@ -10,4 +10,9 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface FileRepository extends JpaRepository<FileDTO, Long> {
+
+    FileDTO findByTestId(Long testId);
+
+    FileDTO findByTaskFormId(Long taskFormId);
+
 }

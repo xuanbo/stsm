@@ -12,6 +12,7 @@ import processStart from '../components/process/start'
 
 // task
 import taskShow from '../components/task/show'
+import taskConfirm from '../components/task/confirm'
 
 // 配置路由
 export default [{
@@ -32,6 +33,9 @@ export default [{
 }, {
   path: '/task/:id',
   component: taskShow
+}, {
+  path: '/task/:id/confirm',
+  component: taskConfirm
 }, {
   path: '*',
   component: notFound

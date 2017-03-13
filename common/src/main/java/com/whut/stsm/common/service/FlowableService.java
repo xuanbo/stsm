@@ -3,6 +3,7 @@ package com.whut.stsm.common.service;
 import com.whut.stsm.common.dto.FileDTO;
 import com.whut.stsm.common.dto.ProcessDefinitionDTO;
 import com.whut.stsm.common.dto.TaskDTO;
+import com.whut.stsm.common.dto.TaskFormDTO;
 import com.whut.stsm.common.dto.TestDTO;
 import com.whut.stsm.common.util.Page;
 
@@ -52,11 +53,13 @@ public interface FlowableService {
 
     void completeTask(String taskId, Map<String, Object> variables);
 
-    String getBusinessKeyByTaskId(String taskId);
+    String getBusinessKeyByTaskId(String processInstanceId);
 
 
     /***************************************************************************************
      *  流程业务逻辑
      **************************************************************************************/
     void startTestProcess(TestDTO testDTO, FileDTO fileDTO);
+
+    void completeTaskForm(TaskFormDTO taskFormDTO, FileDTO fileDTO);
 }

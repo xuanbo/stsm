@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -25,7 +26,7 @@ public class TaskFormDTO implements Serializable {
     private Long id;
 
     @Column
-    private String code;
+    private String code; // 200：正常，500：不正常
 
     @Column
     private String description;
@@ -44,5 +45,9 @@ public class TaskFormDTO implements Serializable {
 
     @Column
     private Long userId; // 任务创建者id
+
+
+    @Transient
+    private String assignee;
 
 }

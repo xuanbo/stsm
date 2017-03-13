@@ -5,6 +5,7 @@ import com.whut.stsm.common.dto.FileDTO;
 import com.whut.stsm.common.dto.ProcessDefinitionDTO;
 import com.whut.stsm.common.dto.ResultDTO;
 import com.whut.stsm.common.dto.TaskDTO;
+import com.whut.stsm.common.dto.TaskFormDTO;
 import com.whut.stsm.common.dto.TestDTO;
 import com.whut.stsm.common.dto.UserDTO;
 import com.whut.stsm.common.service.FlowableService;
@@ -22,6 +23,7 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,8 +44,6 @@ import java.time.LocalDate;
 public class FlowableController {
 
     private static final Logger log = LoggerFactory.getLogger(FlowableController.class);
-
-    private static final String fileRootPath = "D:\\file";
 
     @Reference
     private FlowableService flowableService;
@@ -112,10 +112,34 @@ public class FlowableController {
         testDTO.setUserId(userDTO.getId());
         try {
             // 保存附件
-            FileDTO fileDTO = FileUtil.copy(fileRootPath, getFileRelativePath(username), file);
+            FileDTO fileDTO = FileUtil.copy(getFileRelativePath(username), file);
             // 开启流程
             flowableService.startTestProcess(testDTO, fileDTO);
             return ResultDTO.success("开启成功");
+        } catch (IOException e) {
+            log.error("{}", e);
+            return ResultDTO.fail(500, "文件上传出现错误");
+        }
+    }
+
+    @ApiOperation(value = "完成节点任务", response = ResultDTO.class, produces = "multipart/form-data; charset=UTF-8")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "form", name = "file"),
+            @ApiImplicitParam(paramType = "form", name = "taskFormDTO", required = true)
+    })
+    @PostMapping(value = "/process/completeTask")
+    public ResultDTO<?> completeTaskForm(@RequestPart(required = false) MultipartFile file, TaskFormDTO taskFormDTO) {
+        log.debug("taskFormDTO[{}]", taskFormDTO);
+        // 流程节点任务完成者
+        String username = UserContext.getCurrentUsername();
+        UserDTO userDTO = userService.findByUsername(username);
+        taskFormDTO.setUserId(userDTO.getId());
+        try {
+            // 保存附件
+            FileDTO fileDTO = FileUtil.copy(getFileRelativePath(username), file);
+            // 完成任务
+            flowableService.completeTaskForm(taskFormDTO, fileDTO);
+            return ResultDTO.success("任务完成");
         } catch (IOException e) {
             log.error("{}", e);
             return ResultDTO.fail(500, "文件上传出现错误");

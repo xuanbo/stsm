@@ -4,9 +4,11 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.whut.stsm.common.dto.FileDTO;
 import com.whut.stsm.common.dto.ProcessDefinitionDTO;
 import com.whut.stsm.common.dto.TaskDTO;
+import com.whut.stsm.common.dto.TaskFormDTO;
 import com.whut.stsm.common.dto.TestDTO;
 import com.whut.stsm.common.service.FileService;
 import com.whut.stsm.common.service.FlowableService;
+import com.whut.stsm.common.service.TaskFormService;
 import com.whut.stsm.common.service.TestService;
 import com.whut.stsm.common.util.Check;
 import com.whut.stsm.common.util.Page;
@@ -41,6 +43,9 @@ import java.util.Map;
 @Transactional("transactionManager")
 public class FlowableServiceImpl implements FlowableService {
 
+    private static final String ASSIGNEE_KEY = "username";
+    private static final String TASK_FORM_KEY = "taskFormId";
+
     @Autowired
     private RuntimeService runtimeService;
 
@@ -59,6 +64,9 @@ public class FlowableServiceImpl implements FlowableService {
 
     @Autowired
     private FileService fileService;
+    
+    @Autowired
+    private TaskFormService taskFormService;
 
     @Override
     @Transactional(value = "transactionManager")
@@ -151,8 +159,14 @@ public class FlowableServiceImpl implements FlowableService {
         }
         TaskDTO taskDTO = new TaskDTO(task);
         // 获取businessKey
-        long testId = Long.parseLong(this.getBusinessKeyByTaskId(taskId));
+        long testId = Long.parseLong(getBusinessKeyByTaskId(taskDTO.getProcessInstanceId()));
         taskDTO.setTestDTO(testService.findById(testId));
+        // 获取上一个任务的taskForm
+        Map<String, Object> taskVariables = getTaskVariables(taskId);
+        if (taskVariables.containsKey(TASK_FORM_KEY)) {
+            TaskFormDTO beforeTaskFormDTO = taskFormService.findById((Long) taskVariables.get(TASK_FORM_KEY));
+            taskDTO.setBeforeTaskFormDTO(beforeTaskFormDTO);
+        }
         return taskDTO;
     }
 
@@ -203,10 +217,9 @@ public class FlowableServiceImpl implements FlowableService {
 
     @Override
     @Transactional(value = "transactionManager")
-    public String getBusinessKeyByTaskId(String taskId) {
-        TaskDTO task = findTask(taskId);
+    public String getBusinessKeyByTaskId(String processInstanceId) {
         return runtimeService.createProcessInstanceQuery()
-                .processInstanceId(task.getProcessInstanceId())
+                .processInstanceId(processInstanceId)
                 .singleResult()
                 .getBusinessKey();
     }
@@ -221,6 +234,7 @@ public class FlowableServiceImpl implements FlowableService {
     @Transactional(value = "jpaTxManager")
     public void startTestProcess(TestDTO testDTO, FileDTO fileDTO) {
         // 保存测试清单
+        testDTO.setCreateDate(new Date());
         TestDTO persistTestDTO = testService.save(testDTO);
         // 保存测试清单附件
         if (Check.isNotNull(fileDTO)) {
@@ -229,9 +243,30 @@ public class FlowableServiceImpl implements FlowableService {
         }
         // 启动测试流程
         Map<String, Object> variables = new HashMap<>();
-        variables.put("username", testDTO.getAssignee());
+        variables.put(ASSIGNEE_KEY, testDTO.getAssignee());
         String owner = persistTestDTO.getUserId().toString();
-        this.startProcessInstanceById(persistTestDTO.getProcessDefinitionId(), variables, owner);
+        String businessKey = persistTestDTO.getId() + "";
+        startProcessInstanceById(persistTestDTO.getProcessDefinitionId(), businessKey, variables, owner);
+    }
+
+    @Override
+    @Transactional(value = "jpaTxManager")
+    public void completeTaskForm(TaskFormDTO taskFormDTO, FileDTO fileDTO) {
+        // 保存TaskForm
+        taskFormDTO.setCreateDate(new Date());
+        TaskFormDTO persistTaskFormDTO = taskFormService.save(taskFormDTO);
+        // 保存测试清单附件
+        if (Check.isNotNull(fileDTO)) {
+            fileDTO.setTaskFormId(persistTaskFormDTO.getId());
+            fileService.save(fileDTO);
+        }
+        // 完成任务，设置下一个任务办理人和taskFormId
+        Map<String, Object> variables = new HashMap<>();
+        variables.put(ASSIGNEE_KEY, persistTaskFormDTO.getAssignee());
+        variables.put(TASK_FORM_KEY, persistTaskFormDTO.getId());
+        // taskId
+        String taskId = persistTaskFormDTO.getTaskId() + "";
+        completeTask(taskId, variables);
     }
 
     /*********************************************************************************
